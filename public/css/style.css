@@ -1,0 +1,71 @@
+/* General */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #292929;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1440px;
+}
+
+/* Header */
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 15px 150px;
+    background-color: #F5F3EF;
+}
+
+.logo {
+    display: inherit;
+    margin-right: 78px;
+}
+
+/* Nav */
+
+nav {
+    display: flex;
+    font-size: 14px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+}
+
+nav ul li a {
+    text-decoration: none;
+    display: block;
+}
+
+.right-menu {
+    margin-left: 40px;
+}
+
+.right-menu li a {
+    padding-left: 58px;
+}
+
+.left-menu li a {
+    padding-left: 44px;
+}
+
+.left-menu li:first-child a,
+.right-menu li:first-child a {
+    padding-left: 0;
+}
+
