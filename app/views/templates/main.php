@@ -15,17 +15,19 @@
     <div class="main-container">
         <header>
             <div class="logo">
-                <img src="./img/logo.svg" alt="Le logo de Tom Troc" />
+                <a href="index.php?action=home">
+                    <img src="./img/logo.svg" alt="Le logo de Tom Troc" />
+                </a>
             </div>
             <nav>
                 <ul class="left-menu">
-                    <li><a href="#">Accueil</a></li>
+                    <li><a href="index.php?action=home">Accueil</a></li>
                     <li><a href="#">Nos livres à l’échange</a></li>
                 </ul>
                 <ul class="right-menu">
                     <li><a href="#">Messagerie</a></li>
                     <li><a href="#">Mon compte</a></li>
-                    <li><a href="#">Connexion</a></li>
+                    <li><a href="index.php?action=logInForm">Connexion</a></li>
                 </ul>
             </nav>
         </header>

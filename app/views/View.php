@@ -9,19 +9,20 @@ class View
         $this->title = $title;
     }
 
-    public function render(string $viewName): void
+    public function render(string $viewName, array $params = []): void
     {
         $viewPath = $this->buildViewPath($viewName);
 
-        $content = $this->renderViewFromTemplate($viewPath);
+        $content = $this->renderViewFromTemplate($viewPath, $params);
         $title = $this->title;
 
         require(MAIN_VIEW_PATH);
     }
 
-    private function renderViewFromTemplate(string $viewPath): string
+    private function renderViewFromTemplate(string $viewPath, array $params = []): string
     {
         if (file_exists($viewPath)) {
+            extract($params);
             ob_start();
             require($viewPath);
             return ob_get_clean();
