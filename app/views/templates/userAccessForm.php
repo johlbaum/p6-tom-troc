@@ -1,12 +1,12 @@
 <div class="connexion-wrapper">
     <div class="left-block">
-        <h2><?php echo $action === "logInForm" ?  "Connection" : "Inscription" ?></h2>
+        <h2><?php echo $action === "logInForm" ?  "Connexion" : "Inscription" ?></h2>
         <form action="index.php?action=<?php echo $action === "logInForm" ?  "logIn" : "signIn" ?>" method="POST">
             <?php if ($action !== "logInForm") : ?>
-            <div class="form-input">
-                <label for="pseudo">Pseudo</label>
-                <input type="text" name="pseudo" id="pseudo" />
-            </div>
+                <div class="form-input">
+                    <label for="pseudo">Pseudo</label>
+                    <input type="text" name="pseudo" id="pseudo" />
+                </div>
             <?php endif; ?>
             <div class="form-input">
                 <label for="email">Adresse email</label>
@@ -17,8 +17,7 @@
                 <input type="password" id="password" name="password" minlength="3" />
             </div>
             <div class="form-input">
-                <input type="submit" value="<?php echo $action === "logInForm" ?  "Se connecter" : "S'inscrire" ?>"
-                    class="connexion-submit-button" />
+                <input type="submit" value="<?php echo $action === "logInForm" ?  "Se connecter" : "S'inscrire" ?>" class="connexion-submit-button" />
             </div>
         </form>
         <p>

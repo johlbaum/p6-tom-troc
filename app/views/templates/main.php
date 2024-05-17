@@ -28,8 +28,16 @@
                 </ul>
                 <ul class="right-menu">
                     <li><a href="#">Messagerie</a></li>
-                    <li><a href="#">Mon compte</a></li>
-                    <li><a href="index.php?action=logInForm">Connexion</a></li>
+                    <li><a href="index.php?action=userDashbord">Mon compte</a></li>
+                    <li>
+                        <?php
+                        if (isset($_SESSION['userEmail'])) {
+                            echo '<a href="index.php?action=disconnectUser">Déconnexion</a>';
+                        } else {
+                            echo '<a href="index.php?action=logInForm">Connexion</a>';
+                        }
+                        ?>
+                    </li>
                 </ul>
             </nav>
         </header>

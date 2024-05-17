@@ -30,9 +30,21 @@ try {
             $userAccessController = new UserAccessController();
             $userAccessController->logInUser();
             break;
+        case 'disconnectUser':
+            $userAccessController = new UserAccessController();
+            $userAccessController->disconnectUser();
+            break;
         case 'userDashbord';
-            $userBookController = new UserAdminController();
-            $userBookController->showUserDashbord();
+            $userAdminController = new UserAdminController();
+            $userAdminController->showUserDashbord();
+            break;
+        case 'updateUserProfile';
+            $userAdminController = new UserAdminController();
+            $userAdminController->updateUserProfile();
+            break;
+        case 'updateUserProfileImage';
+            $userAdminController = new UserAdminController();
+            $userAdminController->updateUserProfileImage();
             break;
         default:
             throw new Exception("Action non valide : $action");

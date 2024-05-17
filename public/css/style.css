@@ -243,14 +243,6 @@ nav ul li a {
     border-radius: 50%;
 }
 
-.user-info-picture-profile p {
-    color: #A6A6A6;
-    font-size: 14px;
-    font-weight: 400;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .user-info-wrapper-left hr {
     display: block;
     height: 1px;
@@ -303,6 +295,23 @@ thead th {
 
 tbody td {
     padding: 20px 0px 20px 46px;
+}
+
+.user-info-picture-profile form input {
+    margin: 10px;
+    color: #A6A6A6;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: underline;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+.alert-update-profile-message {
+    text-align: center;
+    padding: 50px 0;
+    color: red;
 }
 
 
