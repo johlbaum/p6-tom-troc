@@ -4,7 +4,9 @@
         <p class="hero-left-block-content">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres
             amoureux de la lecture. Nous croyons en
             la magie du partage de connaissances et d'histoires à travers les livres. </p>
-        <button class="hero-left-block-button">Découvrir</button>
+        <a href="index.php?action=ourBooks">
+            <button class="hero-left-block-button">Découvrir</button>
+        </a>
     </div>
     <div class="hero-right-block-wrapper">
         <img src="./img/banner.png" alt="Un homme entouré de livres">
@@ -27,7 +29,9 @@
         <?php } ?>
     </div>
     <div class="last-book-added-button-wrapper">
-        <button class="last-books-added-button">Voir tous les livres</button>
+        <a href="index.php?action=ourBooks">
+            <button class="last-books-added-button">Voir tous les livres</button>
+        </a>
     </div>
 </section>
 <section class="how-it-works-section">

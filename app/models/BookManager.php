@@ -28,7 +28,12 @@ class BookManager
      */
     public function getAllBooks(): array
     {
-        $sql = "SELECT * FROM book";
+        $sql = "
+            SELECT book.*, user.pseudo AS user_pseudo 
+            FROM book
+            JOIN user ON book.user_id = user.id
+            ORDER BY book.id DESC
+        ";
         $statement = $this->db->prepare($sql);
         $statement->execute();
 
@@ -39,6 +44,29 @@ class BookManager
         }
 
         return $books;
+    }
+
+    /**
+     * Récupère tous les livres d'un utilisateur.
+     * @return array : un tableau d'objets Book.
+     */
+    public function getAllBooksByUser(int $userId): array
+    {
+        try {
+            $sql = "SELECT * FROM book WHERE user_id = :userId";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['userId' => $userId]);
+
+            $allBooksByUser = [];
+
+            while ($allBooksByUserData = $statement->fetch()) {
+                $allBooksByUser[] = Book::fromArray($allBooksByUserData);
+            }
+
+            return $allBooksByUser;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     /**

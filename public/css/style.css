@@ -234,12 +234,16 @@ nav ul li a {
 .cards-wrapper {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .card {
     background-color: #fff;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    width: 200px;
+    margin-bottom: 48px;
+    cursor: pointer;
 }
 
 .card img {
@@ -338,6 +342,7 @@ nav ul li a {
 
 .full-width-image img {
     width: 100%;
+    margin-bottom: 48px;
 }
 
 .our-values-section {
@@ -375,6 +380,44 @@ nav ul li a {
     position: relative;
     left: 80px;
     top: -17px;
+}
+
+/* Ous books */
+
+.our-books-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 72px;
+    align-items: center;
+}
+
+.our-books-wrapper {
+    padding: 130px 263px 80px 263px;
+    background-color: #FAF9F7;
+}
+
+.our-books-header h1 {
+    font-size: 36px;
+    font-weight: 400;
+    font-family: "Playfair Display", serif;
+}
+
+.our-books-submit-button {
+    display: none;
+}
+
+.search-input-wrapper {
+    display: flex;
+    background-color: #fff;
+    padding: 16px 13px;
+    border-radius: 6px;
+}
+
+.search-input-wrapper input {
+    width: 300px;
+    margin-left: 10px;
+    padding-left: 10px;
+    border: none;
 }
 
 /* User dashboard */

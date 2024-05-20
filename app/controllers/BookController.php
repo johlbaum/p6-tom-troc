@@ -19,4 +19,19 @@ class BookControler
             'lastBooksAdded' => $lastBooksAdded
         ]);
     }
+
+    /**
+     * Affiche la page "Nos livres à l'échange"
+     * @return void
+     */
+    public function showOurBooks(): void
+    {
+        $bookManager = new BookManager();
+        $books = $bookManager->getAllBooks();
+
+        $view = new View("Nos livres à l'échange");
+        $view->render("ourBooks", [
+            'books' => $books
+        ]);
+    }
 }

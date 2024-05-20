@@ -14,6 +14,10 @@ try {
             $bookController = new BookControler();
             $bookController->showHome();
             break;
+        case 'ourBooks';
+            $bookController = new BookControler();
+            $bookController->showOurBooks();
+            break;
         case 'logInForm':
             $userAccessController = new UserAccessController();
             $userAccessController->displayUserAccessForm($action);

@@ -15,20 +15,25 @@ class UserAdminController
      */
     public function showUserDashboard(): void
     {
+        // On vérifie si l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
 
+        //On récupère l'id et l'email de l'utilisateur connecté.
+        $userId = $_SESSION['userId'];
         $userEmail = $_SESSION['userEmail'];
 
+        // On récupère les informations de l'utilisateur.
         $userManager = new UserManager();
         $user = $userManager->getUserByEmail($userEmail);
 
+        // On récupère les livres ajoutés par l'utilisateur.
         $bookManager = new BookManager();
-        $books = $bookManager->getAllBooks();
+        $booksByUser = $bookManager->getAllBooksByUser($userId);
 
         $view = new View('Espace administrateur');
         $view->render("userDashboard", [
             'user' => $user,
-            'books' => $books
+            'books' => $booksByUser
         ]);
     }
 

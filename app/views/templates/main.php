@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <title><?= $title ?></title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -24,7 +22,7 @@
             <nav>
                 <ul class="left-menu">
                     <li><a href="index.php?action=home">Accueil</a></li>
-                    <li><a href="#">Nos livres à l’échange</a></li>
+                    <li><a href="index.php?action=ourBooks">Nos livres à l’échange</a></li>
                 </ul>
                 <ul class="right-menu">
                     <li><a href="#">Messagerie</a></li>
