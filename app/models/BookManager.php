@@ -42,6 +42,30 @@ class BookManager
     }
 
     /**
+     * Récupère les 4 derniers livres ajoutés.
+     * @return array : un tableau d'objets Book.
+     */
+    public function lastBooksAdded(): array
+    {
+        $sql = "
+            SELECT book.*, user.pseudo AS user_pseudo 
+            FROM book
+            JOIN user ON book.user_id = user.id
+            ORDER BY book.id DESC
+            LIMIT 4
+        ";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+
+        $lastBooksAdded = [];
+
+        while ($lastBookAddedData = $statement->fetch()) {
+            $lastBooksAdded[] = Book::fromArray($lastBookAddedData);
+        }
+        return $lastBooksAdded;
+    }
+
+    /**
      * Récupère un livre par son id.
      * @param int $id : l'id du livre.
      * @return Book|null : un objet Book ou null si le livre n'existe pas.

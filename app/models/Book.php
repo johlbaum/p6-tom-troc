@@ -7,6 +7,7 @@ class Book
 {
     private ?int $id;
     private ?int $userId;
+    private ?string $userPseudo;
     private ?string $title;
     private ?string $author;
     private ?string $description;
@@ -16,15 +17,17 @@ class Book
      * Constructeur de la classe Book.
      * @param int|null $id : l'ID du livre.
      * @param int|null $userId : l'ID de l'utilisateur qui possède le livre.
+     * @param int|null $user_pseudo : le pseudo de l'utilisateur qui possède le livre.
      * @param string|null $title : le titre du livre.
      * @param string|null $author : l'auteur du livre.
      * @param string|null $description : la description du livre.
      * @param string|null $availability : la disponibilité du livre.
      */
-    public function __construct(int $id = null, int $userId = null, string $title = null, string $author = null, string $description = null, string $availability = null)
+    public function __construct(int $id = null, int $userId = null, string $title = null, string $author = null, string $description = null, string $availability = null, string $user_pseudo = null)
     {
         $this->id = $id;
         $this->userId = $userId;
+        $this->userPseudo = $user_pseudo;
         $this->title = $title;
         $this->author = $author;
         $this->description = $description;
@@ -42,6 +45,7 @@ class Book
         $book = new Book();
         $book->setId($array['id'] ?? null);
         $book->setUserId($array['user_id'] ?? null);
+        $book->setUserPseudo($array['user_pseudo'] ?? null);
         $book->setTitle($array['title'] ?? null);
         $book->setAuthor($array['author'] ?? null);
         $book->setDescription($array['description'] ?? null);
@@ -86,6 +90,25 @@ class Book
     public function getUserId(): ?int
     {
         return $this->userId;
+    }
+
+    /**
+     * Setter pour le pseudo de l'utilisateur qui possède le livre.
+     * @param string|null $userPseudo : le pseudo de l'utilisateur.
+     * @return void
+     */
+    public function setUserPseudo(?string $userPseudo): void
+    {
+        $this->userPseudo = $userPseudo;
+    }
+
+    /**
+     * Getter pour le pseudo de l'utilisateur qui possède le livre.
+     * @return string|null : le pseudo de l'utilisateur.
+     */
+    public function getUserPseudo(): ?string
+    {
+        return $this->userPseudo;
     }
 
     /**

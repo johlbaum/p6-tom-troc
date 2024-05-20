@@ -11,7 +11,12 @@ class BookControler
      */
     public function showHome(): void
     {
+        $bookManager = new BookManager();
+        $lastBooksAdded = $bookManager->lastBooksAdded();
+
         $view = new View("Accueil");
-        $view->render("home");
+        $view->render("home", [
+            'lastBooksAdded' => $lastBooksAdded
+        ]);
     }
 }
