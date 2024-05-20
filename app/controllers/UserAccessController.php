@@ -114,7 +114,7 @@ class UserAccessController
                     $_SESSION['userEmail'] = $user->getEmail();
 
                     // On redirige l'utilisateur vers son espace.
-                    header("Location: index.php?action=userDashbord");
+                    header("Location: index.php?action=userDashboard");
                 }
                 // Si l'utilisateur n'existe pas :
             } else {

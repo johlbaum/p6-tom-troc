@@ -32,9 +32,9 @@ class UserManager
      */
     public function saveUser(string $pseudo, string $email, string $password): bool
     {
-        $sqlQuey = "INSERT INTO user (pseudo, email, password) VALUES (?, ?, ?)";
-        $queryStatement = $this->db->prepare($sqlQuey);
-        $success = $queryStatement->execute([$pseudo, $email, $password]);
+        $sql = "INSERT INTO user (pseudo, email, password) VALUES (?, ?, ?)";
+        $statement = $this->db->prepare($sql);
+        $success = $statement->execute([$pseudo, $email, $password]);
 
         return $success;
     }
@@ -46,13 +46,13 @@ class UserManager
      */
     public function getUserByEmail(string $email): ?User
     {
-        $sqlQuey = "SELECT * FROM user WHERE email = ?";
-        $queryStatement = $this->db->prepare($sqlQuey);
-        $queryStatement->execute([$email]);
-        $user = $queryStatement->fetch();
+        $sql = "SELECT * FROM user WHERE email = ?";
+        $statement = $this->db->prepare($sql);
+        $statement->execute([$email]);
 
-        if ($user) {
-            return User::fromArray($user);
+        $userData = $statement->fetch();
+        if ($userData) {
+            return User::fromArray($userData);
         } else {
             return null;
         }
@@ -68,9 +68,9 @@ class UserManager
      */
     public function updateUserProfile(int $userId, string $pseudo, string $email, string $password): bool
     {
-        $sqlQuey = "UPDATE user SET email = :email, password = :password, pseudo = :pseudo WHERE id = :userId";
-        $queryStatement = $this->db->prepare($sqlQuey);
-        $success = $queryStatement->execute([
+        $sql = "UPDATE user SET email = :email, password = :password, pseudo = :pseudo WHERE id = :userId";
+        $statement = $this->db->prepare($sql);
+        $success = $statement->execute([
             'userId' => $userId,
             'email' => $email,
             'password' => $password,
@@ -88,9 +88,9 @@ class UserManager
      */
     public function updateUserProfileImage(int $userId, string $imagePath): void
     {
-        $sqlQuey = "UPDATE user SET profile_image = :imagePath WHERE id = :userId";
-        $queryStatement = $this->db->prepare($sqlQuey);
-        $queryStatement->execute([
+        $sql = "UPDATE user SET profile_image = :imagePath WHERE id = :userId";
+        $statement = $this->db->prepare($sql);
+        $statement->execute([
             'imagePath' => $imagePath,
             'userId' => $userId
         ]);

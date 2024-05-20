@@ -34,17 +34,29 @@ try {
             $userAccessController = new UserAccessController();
             $userAccessController->disconnectUser();
             break;
-        case 'userDashbord';
+        case 'userDashboard';
             $userAdminController = new UserAdminController();
-            $userAdminController->showUserDashbord();
+            $userAdminController->showUserDashboard();
             break;
         case 'updateUserProfile';
             $userAdminController = new UserAdminController();
             $userAdminController->updateUserProfile();
             break;
-        case 'updateUserProfileImage';
+        case 'addBookForm';
             $userAdminController = new UserAdminController();
-            $userAdminController->updateUserProfileImage();
+            $userAdminController->displayBookForm($action);
+            break;
+        case 'editBookForm';
+            $userAdminController = new UserAdminController();
+            $userAdminController->displayBookForm($action);
+            break;
+        case 'manageBook'; //Ajouter ou modifier un livre.
+            $userAdminController = new UserAdminController();
+            $userAdminController->addOrUpdateBook();
+            break;
+        case 'deleteBook';
+            $userAdminController = new UserAdminController();
+            $userAdminController->deleteBook();
             break;
         default:
             throw new Exception("Action non valide : $action");

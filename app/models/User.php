@@ -9,7 +9,6 @@ class User
     private ?string $pseudo;
     private ?string $email;
     private ?string $password;
-    private ?string $profileImage;
 
     /**
      * Constructeur de la classe User.
@@ -17,20 +16,19 @@ class User
      * @param string|null $pseudo : le pseudo de l'utilisateur.
      * @param string|null $email : l'email de l'utilisateur.
      * @param string|null $password : le mot de passe de l'utilisateur.
-     * @param string|null $profileImage : le chemin de l'image de profil de l'utilisateur.
      */
-    public function __construct(int $id = null, string $pseudo = null, string $email = null, string $password = null, string $profileImage = null)
+    public function __construct(int $id = null, string $pseudo = null, string $email = null, string $password = null)
     {
         $this->id = $id;
         $this->pseudo = $pseudo;
         $this->email = $email;
         $this->password = $password;
-        $this->profileImage = $profileImage;
     }
 
     /**
      * Méthode qui crée et retourne un objet User à partir des données fournies dans un tableau associatif.
      * Les clés du tableau associatif $array doivent correspondre aux noms des propriétés de l'objet User.
+     * @param array $array : tableau associatif contenant les données de l'utilisateur.
      * @return User : objet User.
      */
     public static function fromArray(array $array): User
@@ -40,7 +38,7 @@ class User
         $user->setPseudo($array['pseudo']);
         $user->setEmail($array['email']);
         $user->setPassword($array['password']);
-        $user->setProfileImage($array['profile_image']);
+
         return $user;
     }
 
@@ -118,24 +116,5 @@ class User
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    /**
-     * Setter pour l'image de profil de utilisateur. Lors de la création d'un compte, aucune image n'est définie.
-     * @param string|null : le chemin de l'image de profil de l'utilisateur, ou null si aucune image n'est définie.
-     * @return void
-     */
-    public function setProfileImage(?string $profileImage): void
-    {
-        $this->profileImage = $profileImage;
-    }
-
-    /**
-     * Getter pour l'image de profil de l'utilisateur. Lors de la création d'un compte, aucune image n'est définie.
-     * @return string|null : le chemin de l'image de profil de l'utilisateur, ou null si aucune image n'est définie.
-     */
-    public function getProfileImage(): ?string
-    {
-        return $this->profileImage;
     }
 }

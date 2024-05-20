@@ -28,7 +28,7 @@
                 </ul>
                 <ul class="right-menu">
                     <li><a href="#">Messagerie</a></li>
-                    <li><a href="index.php?action=userDashbord">Mon compte</a></li>
+                    <li><a href="index.php?action=userDashboard">Mon compte</a></li>
                     <li>
                         <?php
                         if (isset($_SESSION['userEmail'])) {
@@ -42,7 +42,14 @@
             </nav>
         </header>
         <?= $content ?>
-        <p>Footer</p>
+        <footer>
+            <ul>
+                <li>Politique de confidentialité</li>
+                <li>Mentions légales</li>
+                <li>Tom Troc©</li>
+                <li><img src="./img/logo-footer.svg" alt="Le logo de Tom Troc" /></li>
+            </ul>
+        </footer>
     </div>
 </body>
 

@@ -1,5 +1,7 @@
 <?php
 
+require_once '../app/models/BookManager.php';
+require_once '../app/models/UserManager.php';
 require_once '../app/views/View.php';
 
 /**
@@ -11,7 +13,7 @@ class UserAdminController
      * Affiche la page d'administration.
      * @return void
      */
-    public function showUserDashbord(): void
+    public function showUserDashboard(): void
     {
         $this->checkIfUserIsConnected();
 
@@ -20,9 +22,13 @@ class UserAdminController
         $userManager = new UserManager();
         $user = $userManager->getUserByEmail($userEmail);
 
+        $bookManager = new BookManager();
+        $books = $bookManager->getAllBooks();
+
         $view = new View('Espace administrateur');
-        $view->render("userDashbord", [
-            'user' => $user
+        $view->render("userDashboard", [
+            'user' => $user,
+            'books' => $books
         ]);
     }
 
@@ -74,48 +80,111 @@ class UserAdminController
             }
         }
 
-        header("Location: index.php?action=userDashbord");
+        header("Location: index.php?action=userDashboard");
     }
 
     /**
-     * Ajoute ou met à jour l'image de profil de l'utilisateur.
+     * Affiche le formulaire d'ajout ou de mise à jour d'un livre.
      * @return void
      */
-    public function updateUserProfileImage(): void
+    public function displayBookForm($action): void
     {
-        // Récupération de l'objet User pour lequel on souhaite ajouter ou modifier un image de profil.
-        $userEmail = $_SESSION['userEmail'];
-        $userManager = new UserManager();
-        $user = $userManager->getUserByEmail($userEmail);
+        // On vérifie si l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
 
-        //Récupération de l'id de l'utilisateur.
-        $userId = $user->getId();
+        $bookManager = new BookManager();
 
-        // Suppression de l'ancienne image du disque si un utilisateur a déjà ajouté une image à son profil et qu'il souhaite la modifier.
-        $userProfileImage = $user->getProfileImage();
-        if (file_exists($userProfileImage)) {
-            unlink($userProfileImage);
+        $book = null;
+
+        // Si l'utilisateur souhaite mettre à jour un livre, l'URL contiendra un paramètre id.
+        // On récupère l'id du livre à modifier dans l'URL s'il existe.
+        if (!empty($_GET['id'])) {
+            $bookId = $_GET['id'];
+            // On récupère l'objet Book correspondant à cet id et on le stocke dans la variable $book.
+            $book = $bookManager->getBookById($bookId);
         }
 
-        if (isset($_FILES['profile-image'])) {
-            // Nom du fichier / Nom temporaire du fichier généré par PHP / Extension du fichier. 
-            $file_name = $_FILES['profile-image']['name'];
-            $file_tmp = $_FILES['profile-image']['tmp_name'];
-            $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-
-            // Définit le nom du fichier de destination ("profile-img - id de l'utilisateur . extension du fichier") et le chemin vers lequel on souhaite déplacer le nouveau fichier téléchargé.
-            $destination = sprintf('./img/profile-img-user-%d.%s', $user->getId(), $file_extension);
-
-            // Déplace le nouveau fichier téléchargé vers le répertoire de destination.
-            move_uploaded_file($file_tmp, $destination);
-
-            // Met à jour le chemin de l'image dans l'objet User.
-            $user->setProfileImage($destination);
-
-            // Met à jour le chemin de l'image dans la base de données.
-            $userManager->updateUserProfileImage($userId, $destination);
+        // Si le livre n'a pas été trouvé (l'utilisateur souhaite ajouter un nouveau livre), on crée un objet Book vide.
+        if (!$book) {
+            $book = Book::fromArray([]);
         }
 
-        header("Location: index.php?action=userDashbord");
+        // On définit le titre de la page en fonction du paramètre $action récupéré dans l'URL.
+        $pageTitle = $action === "addBookForm" ? "Ajouter un livre" : "Modifier un livre";
+
+        $view = new View($pageTitle);
+        $view->render("bookForm", [
+            'action' => $action,
+            'book' => $book //Un objet Book qui contiendra soit les propriétés du livres à mettre à jour, soit un objet vide.
+        ]);
+    }
+
+    /**
+     * Méthode qui permet d'ajouter ou de modifier un livre.
+     * @return void
+     */
+    public function addOrUpdateBook(): void
+    {
+        // On vérifie si l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
+
+        if (
+            empty($_POST['book-title']) ||
+            empty($_POST['book-author']) ||
+            empty($_POST['book-description']) ||
+            empty($_POST['book-availability'])
+        ) {
+            $_SESSION['message'] = "Veuillez remplir tous les champs.";
+        } else {
+
+            $bookManager = new BookManager();
+
+            $bookId = null;
+
+            // On récupère l'id du livre à modifier dans l'URL s'il existe.
+            if (!empty($_GET['id'])) {
+                $bookId = $_GET['id'];
+            }
+
+            // On récupère de l'id de l'utilisateur.
+            $userId = $_SESSION['userId'];
+
+            $bookTitle = htmlspecialchars($_POST['book-title']);
+            $bookAuthor = htmlspecialchars($_POST['book-author']);
+            $bookDescription = htmlspecialchars($_POST['book-description']);
+            $bookAvailability = htmlspecialchars($_POST['book-availability']);
+
+            //Création de l'objet Book.
+            $book = Book::fromArray([
+                'id' => $bookId, //id sera null si aucun paramètre id n'est trouvé dans l'URL (dans la cas de l'ajout d'un nouveau livre).
+                'user_id' => $userId,
+                'title' => $bookTitle,
+                'author' => $bookAuthor,
+                'description' => $bookDescription,
+                'availability' => $bookAvailability
+            ]);
+
+            $bookManager->addOrUpdateBook($book);
+
+            header("Location: index.php?action=userDashboard");
+        }
+    }
+
+    /**
+     * Suppression d'un livre.
+     * @return void
+     */
+    public function deleteBook(): void
+    {
+        $this->checkIfUserIsConnected();
+
+        // On récupère l'id du livre à supprimer.
+        $bookId = $_GET['id'];
+
+        // On supprime le livre.
+        $bookManager = new BookManager();
+        $bookManager->deleteBook($bookId);
+
+        header("Location: index.php?action=userDashboard");
     }
 }
