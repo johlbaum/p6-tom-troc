@@ -100,7 +100,13 @@ class BookManager
      */
     public function getBookById(int $bookId): ?Book
     {
-        $sql = "SELECT * FROM book WHERE id = ?";
+        $sql = "
+            SELECT book.*, user.pseudo AS user_pseudo 
+            FROM book
+            JOIN user ON book.user_id = user.id
+            WHERE book.id = ? 
+        ";
+
         $statement = $this->db->prepare($sql);
         $statement->execute([$bookId]);
 

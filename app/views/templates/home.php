@@ -18,14 +18,16 @@
     <div class="cards-wrapper">
         <?php
         foreach ($lastBooksAdded as $lastBookAdded) { ?>
-        <div class="card">
-            <img src="./img/book-cover.jpg" alt="" class="card-img">
-            <div class="card-content">
-                <p class="card-title"><?= $lastBookAdded->getTitle() ?></p>
-                <p class="card-author"><?= $lastBookAdded->getAuthor() ?></p>
-                <p class="card-sell-by">Vendu par : <?= $lastBookAdded->getUserPseudo() ?></p>
-            </div>
-        </div>
+            <a href="index.php?action=showBook&id=<?= $lastBookAdded->getId() ?>">
+                <div class="card">
+                    <img src="./img/book-cover.jpg" alt="" class="card-img">
+                    <div class="card-content">
+                        <p class="card-title"><?= $lastBookAdded->getTitle() ?></p>
+                        <p class=" card-author"><?= $lastBookAdded->getAuthor() ?></p>
+                        <p class="card-sell-by">Vendu par : <?= $lastBookAdded->getUserPseudo() ?></p>
+                    </div>
+                </div>
+            </a>
         <?php } ?>
     </div>
     <div class="last-book-added-button-wrapper">
@@ -53,7 +55,9 @@
         </div>
     </div>
     <div class="how-it-works-button-wrapper">
-        <button class="how-it-works-button">Voir tous les livres</button>
+        <a href="index.php?action=ourBooks">
+            <button class="how-it-works-button">Voir tous les livres</button>
+        </a>
     </div>
 </section>
 <section class="full-width-image">

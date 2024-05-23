@@ -34,4 +34,21 @@ class BookControler
             'books' => $books
         ]);
     }
+
+    /**
+     * Affiche le détail d'un livre.
+     * @return void
+     */
+    public function showBook(): void
+    {
+        $bookId = $_GET['id'];
+
+        $bookManager = new BookManager();
+        $book = $bookManager->getBookById($bookId);
+
+        $view = new View("...");
+        $view->render("detailBook", [
+            'book' => $book
+        ]);
+    }
 }

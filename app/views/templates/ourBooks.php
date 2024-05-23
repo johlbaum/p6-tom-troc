@@ -12,14 +12,16 @@
     <div class="cards-wrapper">
         <?php
         foreach ($books as $book) { ?>
-            <div class="card">
-                <img src="./img/book-cover.jpg" alt="" class="card-img">
-                <div class="card-content">
-                    <p class="card-title"><?= $book->getTitle() ?></p>
-                    <p class="card-author"><?= $book->getAuthor() ?></p>
-                    <p class="card-sell-by">Vendu par : <?= $book->getUserPseudo() ?></p>
+            <a href="index.php?action=showBook&id=<?= $book->getId() ?>">
+                <div class="card">
+                    <img src="./img/book-cover.jpg" alt="" class="card-img">
+                    <div class="card-content">
+                        <p class="card-title"><?= $book->getTitle() ?></p>
+                        <p class="card-author"><?= $book->getAuthor() ?></p>
+                        <p class="card-sell-by">Vendu par : <?= $book->getUserPseudo() ?></p>
+                    </div>
                 </div>
-            </div>
+            </a>
         <?php } ?>
     </div>
 </div>
