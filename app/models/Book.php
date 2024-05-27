@@ -161,10 +161,21 @@ class Book
 
     /**
      * Getter pour la description du livre.
+     * Retourne les $length premiers caractères du contenu.
+     * @param int $length : le nombre de caractères à retourner.
+     * Si $length n'est pas défini (ou vaut -1), on retourne tout le contenu.
+     * Si le contenu est plus grand que $length, on retourne les $length premiers caractères avec "..." à la fin.
      * @return string|null : la description du livre
      */
-    public function getDescription(): ?string
+    public function getDescription(int $length = -1): ?string
     {
+        if ($length > 0) {
+            $description = mb_substr($this->description, 0, $length);
+            if (strlen($this->description) > $length) {
+                $description .= "...";
+            }
+            return $description;
+        }
         return $this->description;
     }
 

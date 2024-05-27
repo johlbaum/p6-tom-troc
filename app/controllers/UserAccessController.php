@@ -113,8 +113,15 @@ class UserAccessController
                     $_SESSION['userId'] = $user->getId();
                     $_SESSION['userEmail'] = $user->getEmail();
 
-                    // On redirige l'utilisateur vers son espace.
-                    header("Location: index.php?action=userDashboard");
+                    // On vérifie si une URL est définie dans la session.
+                    if (isset($_SESSION['redirectUrl'])) {
+                        $redirectUrl = $_SESSION['redirectUrl'];
+                        unset($_SESSION['redirectUrl']); // On supprime l'URL de redirection de la variable de session.
+                        header("Location: $redirectUrl");
+                    } else {
+                        // On redirige l'utilisateur vers la page d'accueil si aucune URL de redirection n'est définie.
+                        header("Location: index.php?action=home");
+                    }
                 }
                 // Si l'utilisateur n'existe pas :
             } else {

@@ -19,7 +19,7 @@
                 <p class="user-info__library-header">Bibliothèque</p>
                 <div class="user-info__library-wrapper">
                     <img src="./img/book-logo.svg" alt="Logo livres" class="user-info__library-logo">
-                    <p class="user-info__books-count">4 livres</p>
+                    <p class="user-info__books-count"><?= count($books) ?> livres</p>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                         <td><img src="./img/book-cover.jpg" alt="Couverture du livre" class="book-cover-dashboard"></td>
                         <td><?= $book->getTitle() ?></td>
                         <td><?= $user->getPseudo() ?></td>
-                        <td><?= $book->getDescription() ?></td>
+                        <td><?= $book->getDescription(200) ?></td>
                         <td>
                             <p class="<?= $book->getAvailability() === "disponible" ? "available-book" : "unavailable-book" ?>">
                                 <?= $book->getAvailability() ?></p>

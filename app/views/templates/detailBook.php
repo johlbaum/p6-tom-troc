@@ -9,10 +9,12 @@
         <p class="detail-book-subtitle">Description</p>
         <p class="detail-book-description"><?= $book->getDescription() ?></p>
         <p class="detail-book-subtitle">Propriétaire</p>
-        <div class="detail-book-owner-wrapper">
-            <img src="./img/user-profile-img.png" alt="Image de profil du propriétaire du livre">
-            <p><?= $book->getUserPseudo() ?></p>
-        </div>
+        <a href="index.php?action=userProfile&id=<?= $book->getUserId() ?>">
+            <div class="detail-book-owner-wrapper">
+                <img src="./img/user-profile-img.png" alt="Image de profil du propriétaire du livre">
+                <p><?= $book->getUserPseudo() ?></p>
+            </div>
+        </a>
         <div class="detail-book-button-wrapper">
             <a href="">
                 <button class="send-message-button">Envoyer un message</button>

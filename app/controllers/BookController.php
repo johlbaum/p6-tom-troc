@@ -46,7 +46,7 @@ class BookControler
         $bookManager = new BookManager();
         $book = $bookManager->getBookById($bookId);
 
-        $view = new View("...");
+        $view = new View($book->getTitle());
         $view->render("detailBook", [
             'book' => $book
         ]);

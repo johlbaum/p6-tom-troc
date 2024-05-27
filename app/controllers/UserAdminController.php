@@ -5,7 +5,7 @@ require_once '../app/models/UserManager.php';
 require_once '../app/views/View.php';
 
 /**
- * Contrôleur qui gère l'espace administrateur.
+ * Contrôleur qui gère l'espace administrateur et les pages qui nécessitent d'être connecté pour y accéder.
  */
 class UserAdminController
 {
@@ -38,13 +38,17 @@ class UserAdminController
     }
 
     /**
-     * Vérifie que l'utilisateur est connecté.
+     * Vérifie que l'utilisateur est connecté. 
      * @return void
      */
     private function checkIfUserIsConnected(): void
     {
         if (!isset($_SESSION['userEmail'])) {
+            // Si l'utilisateur n'est pas connecté, on stocke l'URL actuelle dans la session
+            // pour pouvoir rediriger l'utilisateur vers cette page une fois connecté.
+            $_SESSION['redirectUrl'] = $_SERVER['REQUEST_URI'];
             header("Location: index.php?action=logInForm");
+            exit;
         }
     }
 
@@ -181,6 +185,7 @@ class UserAdminController
      */
     public function deleteBook(): void
     {
+        // On vérifie si l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
 
         // On récupère l'id du livre à supprimer.
@@ -191,5 +196,32 @@ class UserAdminController
         $bookManager->deleteBook($bookId);
 
         header("Location: index.php?action=userDashboard");
+    }
+
+    /**
+     * Affiche la page de profile d'un utilisateur.
+     * @return void
+     */
+    public function showProfile(): void
+    {
+        // On vérifie si l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
+
+        // On récupère l'id de l'utilisateur.
+        $userId = $_GET['id'];
+
+        // On récupère les informations de l'utilisateur.
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($userId);
+
+        // On récupère les livres ajoutés par l'utilisateur.
+        $bookManager = new BookManager();
+        $booksByUser = $bookManager->getAllBooksByUser($userId);
+
+        $view = new View("Profile de " . $user->getPseudo());
+        $view->render("userProfile", [
+            'user' => $user,
+            'books' => $booksByUser
+        ]);
     }
 }

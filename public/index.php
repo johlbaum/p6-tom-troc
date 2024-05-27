@@ -66,6 +66,10 @@ try {
             $userAdminController = new UserAdminController();
             $userAdminController->deleteBook();
             break;
+        case 'userProfile';
+            $userController = new UserAdminController();
+            $userController->showProfile();
+            break;
         default:
             throw new Exception("Action non valide : $action");
             break;

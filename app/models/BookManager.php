@@ -53,7 +53,19 @@ class BookManager
     public function getAllBooksByUser(int $userId): array
     {
         try {
-            $sql = "SELECT * FROM book WHERE user_id = :userId";
+            $sql = "
+                SELECT 
+                    book.*, 
+                    user.pseudo AS user_pseudo 
+                FROM 
+                    book 
+                JOIN 
+                    user 
+                ON 
+                    book.user_id = user.id
+                WHERE 
+                    book.user_id = :userId
+            ";
             $statement = $this->db->prepare($sql);
             $statement->execute(['userId' => $userId]);
 

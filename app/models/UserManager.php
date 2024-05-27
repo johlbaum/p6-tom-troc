@@ -59,6 +59,26 @@ class UserManager
     }
 
     /**
+     * Récupère un utilisateur à partir de son id.
+     * @param int $userId : l'id de l'utilisateur.
+     * @return User|null : l'utilisateur correspondant à l'id, ou null si aucun utilisateur trouvé.
+     */
+    public function getUserById(int $userId): ?User
+    {
+        $sql = "SELECT * FROM user WHERE id = ?";
+        $statement = $this->db->prepare($sql);
+        $statement->execute([$userId]);
+
+        $userData = $statement->fetch();
+        if ($userData) {
+            return User::fromArray($userData);
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
      * Met à jour le profil d'un utilisateur dans la base de données.
      * @param int $userId : l'id de l'utilisateur.
      * @param string $pseudo : le nouveau pseudo de l'utilisateur.
