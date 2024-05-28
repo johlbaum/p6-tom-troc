@@ -29,33 +29,34 @@
                                                         } ?>" method="POST">
                 <div class="add-book-form-input">
                     <label for="title">Titre</label>
-                    <input type="text" name="book-title" id="title" autocomplete="new-title"
-                        value="<?php echo $book->getTitle() ?>" />
+                    <input type="text" name="book-title" id="title" autocomplete="new-title" value="<?php echo $book->getTitle() ?>" />
                 </div>
                 <div class="add-book-form-input">
                     <label for="author">Auteur</label>
-                    <input type="text" name="book-author" id="author" autocomplete="new-author"
-                        value="<?php echo $book->getAuthor() ?>" />
+                    <input type="text" name="book-author" id="author" autocomplete="new-author" value="<?php echo $book->getAuthor() ?>" />
                 </div>
                 <div class=" add-book-form-input">
                     <label for="description">Commentaire</label>
-                    <input type="text" name="book-description" id="description" autocomplete="off"
-                        value="<?php echo $book->getDescription() ?>" />
+                    <input type="text" name="book-description" id="description" autocomplete="off" value="<?php echo $book->getDescription() ?>" />
                 </div>
                 <div class=" add-book-form-input">
                     <label for="availability">Disponibilité</label>
                     <select name="book-availability" id="availability">
                         <option value=""></option>
-                        <option value="disponible"
-                            <?php echo $book->getAvailability() === 'disponible' ? 'selected' : ''; ?>>disponible
+                        <option value="disponible" <?php echo $book->getAvailability() === 'disponible' ? 'selected' : ''; ?>>disponible
                         </option>
-                        <option value="non dispo."
-                            <?php echo $book->getAvailability() === 'non dispo.' ? 'selected' : ''; ?>>non dispo.
+                        <option value="non dispo." <?php echo $book->getAvailability() === 'non dispo.' ? 'selected' : ''; ?>>non dispo.
                         </option>
                     </select>
                 </div>
                 <input type="submit" value="Valider" class="submit-button" />
             </form>
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo '<p class="alert-message">' . $_SESSION['message'] . '</p>';
+                unset($_SESSION['message']);
+            }
+            ?>
         </div>
     </div>
 </div>

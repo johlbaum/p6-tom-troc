@@ -5,7 +5,8 @@ require_once '../app/models/UserManager.php';
 require_once '../app/views/View.php';
 
 /**
- * Contrôleur qui gère l'espace administrateur et les pages qui nécessitent d'être connecté pour y accéder.
+ * Contrôleur qui gère l'espace administrateur et les pages et les opérations qui nécessitent 
+ * d'être connecté pour y accéder.
  */
 class UserAdminController
 {
@@ -90,6 +91,7 @@ class UserAdminController
         }
 
         header("Location: index.php?action=userDashboard");
+        exit;
     }
 
     /**
@@ -137,6 +139,11 @@ class UserAdminController
         // On vérifie si l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
 
+        // On récupère l'id du livre à modifier dans l'URL s'il existe (dans le cas de la mise à jour d'un livre).
+        if (!empty($_GET['id'])) {
+            $bookId = $_GET['id'];
+        }
+
         if (
             empty($_POST['book-title']) ||
             empty($_POST['book-author']) ||
@@ -144,16 +151,18 @@ class UserAdminController
             empty($_POST['book-availability'])
         ) {
             $_SESSION['message'] = "Veuillez remplir tous les champs.";
+            if ($bookId) {
+                header("Location: index.php?action=editBookForm");
+                exit;
+            } else {
+                header("Location: index.php?action=addBookForm");
+                exit;
+            }
         } else {
 
             $bookManager = new BookManager();
 
             $bookId = null;
-
-            // On récupère l'id du livre à modifier dans l'URL s'il existe.
-            if (!empty($_GET['id'])) {
-                $bookId = $_GET['id'];
-            }
 
             // On récupère de l'id de l'utilisateur.
             $userId = $_SESSION['userId'];
@@ -176,6 +185,7 @@ class UserAdminController
             $bookManager->addOrUpdateBook($book);
 
             header("Location: index.php?action=userDashboard");
+            exit;
         }
     }
 
@@ -196,6 +206,7 @@ class UserAdminController
         $bookManager->deleteBook($bookId);
 
         header("Location: index.php?action=userDashboard");
+        exit;
     }
 
     /**

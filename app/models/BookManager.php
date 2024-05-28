@@ -201,4 +201,35 @@ class BookManager
         $statement = $this->db->prepare($sql);
         $statement->execute(['id' => $bookId]);
     }
+
+    /**
+     * Recherche les livres par titre.
+     * @param string $searchValue : la valeur de recherche.
+     * @return array : un tableau d'objets Book.
+     */
+    public function searchBooks(string $searchValue): array
+    {
+        try {
+            $sql = "
+            SELECT book.*, user.pseudo AS user_pseudo 
+            FROM book
+            JOIN user ON book.user_id = user.id
+            WHERE book.title LIKE :searchValue
+        ";
+            $statement = $this->db->prepare($sql);
+            // Ajout du caractère joker à la fin de la la valeur de recherche pour permettre de rechercher 
+            // les livres dont les titres commencent exactement par la valeur de recherche fournie par l'utilisateur.
+            $statement->execute(['searchValue' => $searchValue . '%']);
+
+            $searchResults = [];
+
+            while ($bookData = $statement->fetch()) {
+                $searchResults[] = Book::fromArray($bookData);
+            }
+
+            return $searchResults;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }

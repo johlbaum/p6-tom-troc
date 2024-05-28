@@ -8,7 +8,6 @@ require_once '../app/models/UserManager.php';
  */
 class UserAccessController
 {
-
     /**
      * Affiche le formulaire d'enregistrement et de connexion.
      * @param string $action : l'action à effectuer (signIn ou logIn).
@@ -21,7 +20,6 @@ class UserAccessController
             'action' => $action
         ]);
     }
-
 
     /**
      * Enregistrement de l'utilisateur.
@@ -118,9 +116,11 @@ class UserAccessController
                         $redirectUrl = $_SESSION['redirectUrl'];
                         unset($_SESSION['redirectUrl']); // On supprime l'URL de redirection de la variable de session.
                         header("Location: $redirectUrl");
+                        exit;
                     } else {
                         // On redirige l'utilisateur vers la page d'accueil si aucune URL de redirection n'est définie.
                         header("Location: index.php?action=home");
+                        exit;
                     }
                 }
                 // Si l'utilisateur n'existe pas :
@@ -142,5 +142,6 @@ class UserAccessController
         unset($_SESSION['userId']);
 
         header("Location: index.php?action=home");
+        exit;
     }
 }

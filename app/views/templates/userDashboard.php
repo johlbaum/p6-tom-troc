@@ -2,7 +2,7 @@
     <h2>Mon compte</h2>
     <?php
     if (isset($_SESSION['message'])) {
-        echo '<p class="alert-update-profile-message">' . $_SESSION['message'] . '</p>';
+        echo '<p class="alert-message">' . $_SESSION['message'] . '</p>';
         unset($_SESSION['message']);
     }
     ?>

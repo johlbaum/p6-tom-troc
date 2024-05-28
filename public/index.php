@@ -70,6 +70,10 @@ try {
             $userController = new UserAdminController();
             $userController->showProfile();
             break;
+        case 'searchBooks';
+            $bookController = new BookControler();
+            $bookController->showSearchBooksResult();
+            break;
         default:
             throw new Exception("Action non valide : $action");
             break;

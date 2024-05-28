@@ -38,6 +38,10 @@ body {
 .main-container {
     width: 100%;
     max-width: 1440px;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
 }
 
 /* Header */
@@ -47,6 +51,7 @@ header {
     align-items: center;
     padding: 15px 150px;
     background-color: #F5F3EF;
+    height: 80px;
 }
 
 .logo {
@@ -162,7 +167,7 @@ nav ul li a {
 
 .alert-signIn-message {
     margin-top: 30px;
-    color: red;
+    color: #02766b;
     width: 30%;
 }
 
@@ -240,7 +245,8 @@ nav ul li a {
 
 .cards-wrapper a {
     text-decoration: none; 
-    color: inherit; 
+    color: inherit;
+    margin-bottom: 48px; 
 }
 
 .card {
@@ -248,7 +254,7 @@ nav ul li a {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     width: 200px;
-    margin-bottom: 48px;
+    height: 100%;
     cursor: pointer;
 }
 
@@ -672,10 +678,10 @@ tbody td {
     background-color: transparent;
 }
 
-.alert-update-profile-message {
+.alert-message {
     text-align: center;
     padding: 50px 0;
-    color: red;
+    color: #02766b;
 }
 
 .book-cover-dashboard {
@@ -893,13 +899,18 @@ tbody td {
 
 /* Footer */
 
+footer {
+    height: 60px;
+}
+
 footer ul {
     display: flex;
     align-items: center;
     text-decoration: none;
     list-style-type: none;
     justify-content: end;
-    padding: 20px 46px 20px 0;
+    height: 100%;
+    padding-right: 46px;
 }
 
 footer ul li {
