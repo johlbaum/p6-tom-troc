@@ -13,9 +13,9 @@
             &larr; retour
         </a>
     </div>
-    <h2>
+    <h1>
         <?php echo $action === "addBookForm" ? "Ajouter un livre" : "Modifier les informations"; ?>
-    </h2>
+    </h1>
     <div class="add-book-form-wrapper">
         <div class="add-book-form-left-block">
             <p>Photo</p>
@@ -35,9 +35,9 @@
                     <label for="author">Auteur</label>
                     <input type="text" name="book-author" id="author" autocomplete="new-author" value="<?php echo $book->getAuthor() ?>" />
                 </div>
-                <div class=" add-book-form-input">
+                <div class="add-book-form-input">
                     <label for="description">Commentaire</label>
-                    <input type="text" name="book-description" id="description" autocomplete="off" value="<?php echo $book->getDescription() ?>" />
+                    <textarea name="book-description" id="description" autocomplete="off"><?php echo $book->getDescription(); ?></textarea>
                 </div>
                 <div class=" add-book-form-input">
                     <label for="availability">Disponibilité</label>

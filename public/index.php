@@ -4,6 +4,7 @@ require_once('../config/config.php');
 require_once('../app/controllers/BookController.php');
 require_once('../app/controllers/UserAccessController.php');
 require_once('../app/controllers/UserAdminController.php');
+require_once('../app/controllers/MailBoxController.php');
 require_once('../app/views/View.php');
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
@@ -32,7 +33,7 @@ try {
             break;
         case 'signIn';
             $userAccessController = new UserAccessController();
-            $userAccessController->signInUser();
+            $userAccessController->signUpUser();
             break;
         case 'logIn';
             $userAccessController = new UserAccessController();
@@ -73,6 +74,14 @@ try {
         case 'searchBooks';
             $bookController = new BookControler();
             $bookController->showSearchBooksResult();
+            break;
+        case 'showMailBox';
+            $mailBoxController = new MailBoxController();
+            $mailBoxController->showMailBox();
+            break;
+        case 'sendMessage';
+            $mailBoxController = new MailBoxController();
+            $mailBoxController->sendMessage();
             break;
         default:
             throw new Exception("Action non valide : $action");

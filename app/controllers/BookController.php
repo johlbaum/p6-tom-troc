@@ -11,14 +11,20 @@ require_once('../app/models/BookManager.php');
  */
 class BookControler
 {
+    private BookManager $bookManager;
+
+    public function __construct()
+    {
+        $this->bookManager = new BookManager();
+    }
+
     /**
      * Affiche la page d'accueil avec les derniers livres ajoutés.
      * @return void
      */
     public function showHome(): void
     {
-        $bookManager = new BookManager();
-        $lastBooksAdded = $bookManager->lastBooksAdded();
+        $lastBooksAdded = $this->bookManager->lastBooksAdded();
 
         $view = new View("Accueil");
         $view->render("home", [
@@ -32,8 +38,7 @@ class BookControler
      */
     public function showOurBooks(): void
     {
-        $bookManager = new BookManager();
-        $books = $bookManager->getAllBooks();
+        $books = $this->bookManager->getAllBooks();
 
         $view = new View("Nos livres à l'échange");
         $view->render("ourBooks", [
@@ -47,10 +52,9 @@ class BookControler
      */
     public function showBook(): void
     {
-        $bookId = $_GET['id'];
+        $bookId = $_GET['bookId'];
 
-        $bookManager = new BookManager();
-        $book = $bookManager->getBookById($bookId);
+        $book = $this->bookManager->getBookById($bookId);
 
         $view = new View($book->getTitle());
         $view->render("detailBook", [
@@ -78,8 +82,7 @@ class BookControler
         $searchValue = htmlspecialchars($searchValue);
 
         // On effectue la recherche.
-        $bookManager = new BookManager();
-        $books = $bookManager->searchBooks($searchValue);
+        $books = $this->bookManager->searchBooks($searchValue);
 
         // On affiche un message si aucun livre n'est trouvé.
         if (empty($books)) {

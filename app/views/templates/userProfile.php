@@ -6,15 +6,15 @@
         <hr />
         <div class="user-info">
             <p class="user-info__pseudo"><?= $user->getPseudo() ?></p>
-            <p class="user-info__register-date">Membre depuis 1 an</p>
+            <p class="user-info__register-date">Membre depuis <?= $registrationDate ?></p>
             <p class="user-info__library-header">Bibliothèque</p>
             <div class="user-info__library-wrapper">
                 <img src="./img/book-logo.svg" alt="Logo livres" class="user-info__library-logo">
                 <p class="user-info__books-count"><?= count($books) ?> livres</p>
             </div>
             <div class="profile-send-message-button">
-                <a href="index.php?action=addBookForm">
-                    <button>Écrire un message</button>
+                <a href="index.php?action=showMailBox&receiverId=<?= $user->getId() ?>">
+                    <p>Écrire un message</p>
                 </a>
             </div>
         </div>
@@ -40,7 +40,7 @@
                             <td><img src="./img/book-cover.jpg" alt="Couverture du livre" class="book-cover-dashboard"></td>
                             <td><?= $book->getTitle() ?></td>
                             <td><?= $book->getAuthor() ?></td>
-                            <td><?= $book->getDescription(200) ?></td>
+                            <td><?= $book->getDescription(50) ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>

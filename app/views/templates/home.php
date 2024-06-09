@@ -5,7 +5,7 @@
             amoureux de la lecture. Nous croyons en
             la magie du partage de connaissances et d'histoires à travers les livres. </p>
         <a href="index.php?action=ourBooks">
-            <button class="hero-left-block-button">Découvrir</button>
+            <p class="hero-left-block-button">Découvrir</p>
         </a>
     </div>
     <div class="hero-right-block-wrapper">
@@ -32,7 +32,7 @@
     </div>
     <div class="last-book-added-button-wrapper">
         <a href="index.php?action=ourBooks">
-            <button class="last-books-added-button">Voir tous les livres</button>
+            <p class="last-books-added-button">Voir tous les livres</p>
         </a>
     </div>
 </section>
@@ -56,7 +56,7 @@
     </div>
     <div class="how-it-works-button-wrapper">
         <a href="index.php?action=ourBooks">
-            <button class="how-it-works-button">Voir tous les livres</button>
+            <p class="how-it-works-button">Voir tous les livres</p>
         </a>
     </div>
 </section>

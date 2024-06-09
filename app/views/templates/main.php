@@ -15,18 +15,25 @@
     <div class="main-container">
         <header>
             <div class="logo">
-                <a href="index.php?action=home">
-                    <img src="./img/logo.svg" alt="Le logo de Tom Troc" />
-                </a>
+                <img src="./img/logo.svg" alt="Le logo de Tom Troc" />
             </div>
+            <?php $currentPage = $_GET['action']; ?>
             <nav>
                 <ul class="left-menu">
-                    <li><a href="index.php?action=home">Accueil</a></li>
-                    <li><a href="index.php?action=ourBooks">Nos livres à l’échange</a></li>
+                    <li <?php if ($currentPage === 'home') echo 'class="selected"'; ?>><a href="index.php?action=home">Accueil</a></li>
+                    <li <?php if ($currentPage === 'ourBooks') echo 'class="selected"'; ?>><a href="index.php?action=ourBooks">Nos livres à l’échange</a></li>
                 </ul>
                 <ul class="right-menu">
-                    <li><a href="#">Messagerie</a></li>
-                    <li><a href="index.php?action=userDashboard">Mon compte</a></li>
+                    <li class="<?php echo $currentPage === 'showMailBox' ? 'selected mail-box-item' : 'mail-box-item'; ?>">
+                        <a href="index.php?action=showMailBox">
+                            <img src="./img/message-icon.svg" alt="Icone de la messagerie" class="message-icon">
+                            Messagerie
+                            <?php echo $_SESSION['unreadMessagesCount'] > 0 ? '<span class="unread-msg-count">' . $_SESSION['unreadMessagesCount'] . '</span>' : ''; ?>
+                        </a>
+                    </li>
+                    <li <?php if ($currentPage === 'userDashboard') echo 'class="selected"'; ?>><a href="index.php?action=userDashboard">
+                            <img src="./img/account-icon.svg" alt="Icone du compte" class="account-icon">
+                            Mon compte</a></li>
                     <li>
                         <?php
                         if (isset($_SESSION['userEmail'])) {

@@ -1,5 +1,5 @@
 <div class="dashboard-wrapper">
-    <h2>Mon compte</h2>
+    <h1>Mon compte</h1>
     <?php
     if (isset($_SESSION['message'])) {
         echo '<p class="alert-message">' . $_SESSION['message'] . '</p>';
@@ -15,7 +15,7 @@
             <hr />
             <div class="user-info">
                 <p class="user-info__pseudo"><?= $user->getPseudo() ?></p>
-                <p class="user-info__register-date">Membre depuis 1 an</p>
+                <p class="user-info__register-date">Membre depuis <?php echo $registrationDate ?></p>
                 <p class="user-info__library-header">Bibliothèque</p>
                 <div class="user-info__library-wrapper">
                     <img src="./img/book-logo.svg" alt="Logo livres" class="user-info__library-logo">
@@ -28,7 +28,7 @@
             <form action="index.php?action=updateUserProfile" method="POST">
                 <div class="dashboard-form-input">
                     <label for="email">Adresse email</label>
-                    <input type="email" name="email" id="email" autocomplete="new-email" value="<?= $user->getEmail() ?>" />
+                    <input type="email" name="email" id="email" autocomplete="newEmail" value="<?= $user->getEmail() ?>" />
                 </div>
                 <div class="dashboard-form-input">
                     <label for="password">Mot de passe</label>
@@ -64,7 +64,7 @@
                         <td><img src="./img/book-cover.jpg" alt="Couverture du livre" class="book-cover-dashboard"></td>
                         <td><?= $book->getTitle() ?></td>
                         <td><?= $user->getPseudo() ?></td>
-                        <td><?= $book->getDescription(200) ?></td>
+                        <td><?= $book->getDescription(100) ?></td>
                         <td>
                             <p class="<?= $book->getAvailability() === "disponible" ? "available-book" : "unavailable-book" ?>">
                                 <?= $book->getAvailability() ?></p>
@@ -80,7 +80,7 @@
     </div>
     <div class="add-book-button">
         <a href="index.php?action=addBookForm">
-            <button>Ajouter</button>
+            <p>Ajouter</p>
         </a>
     </div>
 </div>

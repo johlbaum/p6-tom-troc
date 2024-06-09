@@ -9,6 +9,7 @@ class User
     private ?string $pseudo;
     private ?string $email;
     private ?string $password;
+    private ?DateTime $createdAt;
 
     /**
      * Constructeur de la classe User.
@@ -16,13 +17,15 @@ class User
      * @param string|null $pseudo : le pseudo de l'utilisateur.
      * @param string|null $email : l'email de l'utilisateur.
      * @param string|null $password : le mot de passe de l'utilisateur.
+     * @param DateTime|null $createdAt : la date de création du compte de l'utilisateur.
      */
-    public function __construct(int $id = null, string $pseudo = null, string $email = null, string $password = null)
+    public function __construct(int $id = null, string $pseudo = null, string $email = null, string $password = null, ?DateTime $createdAt = null)
     {
         $this->id = $id;
         $this->pseudo = $pseudo;
         $this->email = $email;
         $this->password = $password;
+        $this->createdAt = $createdAt;
     }
 
     /**
@@ -34,10 +37,11 @@ class User
     public static function fromArray(array $array): User
     {
         $user = new User();
-        $user->setId($array['id']);
-        $user->setPseudo($array['pseudo']);
-        $user->setEmail($array['email']);
-        $user->setPassword($array['password']);
+        $user->setId($array['id'] ?? null);
+        $user->setPseudo($array['pseudo'] ?? null);
+        $user->setEmail($array['email'] ?? null);
+        $user->setPassword($array['password'] ?? null);
+        $user->setCreatedAt(new DateTime($array['created_at']));
 
         return $user;
     }
@@ -47,7 +51,7 @@ class User
      * @param int $id : l'id de l'utilisateur. 
      * @return void
      */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -56,17 +60,17 @@ class User
      * Getter pour l'id de l'utilisateur.
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * Setter pour le pseudo de utilisateur.
-     * @param int $pseudo : le pseudo de l'utilisateur. 
+     * @param string $pseudo : le pseudo de l'utilisateur. 
      * @return void
      */
-    public function setPseudo(string $pseudo): void
+    public function setPseudo(?string $pseudo): void
     {
         $this->pseudo = $pseudo;
     }
@@ -75,26 +79,26 @@ class User
      * Getter pour le pseudo de l'utilisateur.
      * @return string
      */
-    public function getPseudo(): string
+    public function getPseudo(): ?string
     {
         return $this->pseudo;
     }
 
     /**
-     * Setter pour le l'email de utilisateur.
+     * Setter pour l'email de utilisateur.
      * @param string $email : l'email de l'utilisateur. 
      * @return void
      */
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
     /**
-     * Getter pour le l'email de l'utilisateur.
+     * Getter pour l'email de l'utilisateur.
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -104,7 +108,7 @@ class User
      * @param string $password : le password de l'utilisateur. 
      * @return void
      */
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
@@ -113,8 +117,27 @@ class User
      * Getter pour le password de l'utilisateur.
      * @return string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    /**
+     * Setter pour la date de création du compte utilisateur.
+     * @param DateTime|null $createdAt : la date de création du compte.
+     * @return void
+     */
+    public function setCreatedAt(?DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Getter pour la date de création du compte utilisateur.
+     * @return DateTime|null : la date de création du compte utilisateur.
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
     }
 }

@@ -3,6 +3,8 @@
 require_once '../app/models/BookManager.php';
 require_once '../app/models/UserManager.php';
 require_once '../app/views/View.php';
+require_once '../app/services/Utils.php';
+require_once '../app/services/UserService.php';
 
 /**
  * Contrôleur qui gère l'espace administrateur et les pages et les opérations qui nécessitent 
@@ -10,6 +12,17 @@ require_once '../app/views/View.php';
  */
 class UserAdminController
 {
+    private UserManager $userManager;
+    private BookManager $bookManager;
+    private UserService $userService;
+
+    public function __construct()
+    {
+        $this->userManager = new UserManager();
+        $this->bookManager = new BookManager();
+        $this->userService = new UserService();
+    }
+
     /**
      * Affiche la page d'administration.
      * @return void
@@ -17,40 +30,27 @@ class UserAdminController
     public function showUserDashboard(): void
     {
         // On vérifie si l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         //On récupère l'id et l'email de l'utilisateur connecté.
         $userId = $_SESSION['userId'];
         $userEmail = $_SESSION['userEmail'];
 
         // On récupère les informations de l'utilisateur.
-        $userManager = new UserManager();
-        $user = $userManager->getUserByEmail($userEmail);
+        $user = $this->userManager->getUserByEmail($userEmail);
 
         // On récupère les livres ajoutés par l'utilisateur.
-        $bookManager = new BookManager();
-        $booksByUser = $bookManager->getAllBooksByUser($userId);
+        $booksByUser = $this->bookManager->getAllBooksByUser($userId);
+
+        // On récupère la date d'inscription de l'utilisateur.
+        $registrationDate = $this->userService->getUserRegistrationDate($userId);
 
         $view = new View('Espace administrateur');
         $view->render("userDashboard", [
             'user' => $user,
-            'books' => $booksByUser
+            'books' => $booksByUser,
+            'registrationDate' => $registrationDate
         ]);
-    }
-
-    /**
-     * Vérifie que l'utilisateur est connecté. 
-     * @return void
-     */
-    private function checkIfUserIsConnected(): void
-    {
-        if (!isset($_SESSION['userEmail'])) {
-            // Si l'utilisateur n'est pas connecté, on stocke l'URL actuelle dans la session
-            // pour pouvoir rediriger l'utilisateur vers cette page une fois connecté.
-            $_SESSION['redirectUrl'] = $_SERVER['REQUEST_URI'];
-            header("Location: index.php?action=logInForm");
-            exit;
-        }
     }
 
     /**
@@ -78,8 +78,7 @@ class UserAdminController
             $userId = $_SESSION['userId'];
 
             // On enregistre l'utilisateur dans la base de données.
-            $userManager = new UserManager();
-            $success = $userManager->updateUserProfile($userId, $pseudo, $email, $cryptPassword);
+            $success = $this->userManager->updateUserProfile($userId, $pseudo, $email, $cryptPassword);
 
             // On envoie un message de confirmation de mise à jour de compte ou d'erreur à l'utilisateur.
             if ($success) {
@@ -101,9 +100,7 @@ class UserAdminController
     public function displayBookForm($action): void
     {
         // On vérifie si l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
-
-        $bookManager = new BookManager();
+        Utils::checkIfUserIsConnected();
 
         $book = null;
 
@@ -112,7 +109,7 @@ class UserAdminController
         if (!empty($_GET['id'])) {
             $bookId = $_GET['id'];
             // On récupère l'objet Book correspondant à cet id et on le stocke dans la variable $book.
-            $book = $bookManager->getBookById($bookId);
+            $book = $this->bookManager->getBookById($bookId);
         }
 
         // Si le livre n'a pas été trouvé (l'utilisateur souhaite ajouter un nouveau livre), on crée un objet Book vide.
@@ -137,7 +134,7 @@ class UserAdminController
     public function addOrUpdateBook(): void
     {
         // On vérifie si l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         // On récupère l'id du livre à modifier dans l'URL s'il existe (dans le cas de la mise à jour d'un livre).
         if (!empty($_GET['id'])) {
@@ -159,9 +156,6 @@ class UserAdminController
                 exit;
             }
         } else {
-
-            $bookManager = new BookManager();
-
             $bookId = null;
 
             // On récupère de l'id de l'utilisateur.
@@ -182,7 +176,7 @@ class UserAdminController
                 'availability' => $bookAvailability
             ]);
 
-            $bookManager->addOrUpdateBook($book);
+            $this->bookManager->addOrUpdateBook($book);
 
             header("Location: index.php?action=userDashboard");
             exit;
@@ -196,14 +190,13 @@ class UserAdminController
     public function deleteBook(): void
     {
         // On vérifie si l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         // On récupère l'id du livre à supprimer.
         $bookId = $_GET['id'];
 
         // On supprime le livre.
-        $bookManager = new BookManager();
-        $bookManager->deleteBook($bookId);
+        $this->bookManager->deleteBook($bookId);
 
         header("Location: index.php?action=userDashboard");
         exit;
@@ -216,23 +209,25 @@ class UserAdminController
     public function showProfile(): void
     {
         // On vérifie si l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
+        Utils::checkIfUserIsConnected();
 
         // On récupère l'id de l'utilisateur.
         $userId = $_GET['id'];
 
         // On récupère les informations de l'utilisateur.
-        $userManager = new UserManager();
-        $user = $userManager->getUserById($userId);
+        $user = $this->userManager->getUserById($userId);
 
         // On récupère les livres ajoutés par l'utilisateur.
-        $bookManager = new BookManager();
-        $booksByUser = $bookManager->getAllBooksByUser($userId);
+        $booksByUser = $this->bookManager->getAllBooksByUser($userId);
+
+        // On récupère la date d'inscription de l'utilisateur.
+        $registrationDate = $this->userService->getUserRegistrationDate($userId);
 
         $view = new View("Profile de " . $user->getPseudo());
         $view->render("userProfile", [
             'user' => $user,
-            'books' => $booksByUser
+            'books' => $booksByUser,
+            'registrationDate' => $registrationDate
         ]);
     }
 }

@@ -28,22 +28,26 @@ class BookManager
      */
     public function getAllBooks(): array
     {
-        $sql = "
+        try {
+            $sql = "
             SELECT book.*, user.pseudo AS user_pseudo 
             FROM book
             JOIN user ON book.user_id = user.id
             ORDER BY book.id DESC
         ";
-        $statement = $this->db->prepare($sql);
-        $statement->execute();
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
 
-        $books = [];
+            $books = [];
 
-        while ($bookData = $statement->fetch()) {
-            $books[] = Book::fromArray($bookData);
+            while ($bookData = $statement->fetch()) {
+                $books[] = Book::fromArray($bookData);
+            }
+
+            return $books;
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
         }
-
-        return $books;
     }
 
     /**
@@ -77,7 +81,7 @@ class BookManager
 
             return $allBooksByUser;
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Error : " . $e->getMessage();
         }
     }
 
@@ -87,22 +91,26 @@ class BookManager
      */
     public function lastBooksAdded(): array
     {
-        $sql = "
+        try {
+            $sql = "
             SELECT book.*, user.pseudo AS user_pseudo 
             FROM book
             JOIN user ON book.user_id = user.id
             ORDER BY book.id DESC
             LIMIT 4
         ";
-        $statement = $this->db->prepare($sql);
-        $statement->execute();
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
 
-        $lastBooksAdded = [];
+            $lastBooksAdded = [];
 
-        while ($lastBookAddedData = $statement->fetch()) {
-            $lastBooksAdded[] = Book::fromArray($lastBookAddedData);
+            while ($lastBookAddedData = $statement->fetch()) {
+                $lastBooksAdded[] = Book::fromArray($lastBookAddedData);
+            }
+            return $lastBooksAdded;
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
         }
-        return $lastBooksAdded;
     }
 
     /**
@@ -112,23 +120,27 @@ class BookManager
      */
     public function getBookById(int $bookId): ?Book
     {
-        $sql = "
+        try {
+            $sql = "
             SELECT book.*, user.pseudo AS user_pseudo 
             FROM book
             JOIN user ON book.user_id = user.id
             WHERE book.id = ? 
         ";
 
-        $statement = $this->db->prepare($sql);
-        $statement->execute([$bookId]);
+            $statement = $this->db->prepare($sql);
+            $statement->execute([$bookId]);
 
-        $bookData = $statement->fetch();
+            $bookData = $statement->fetch();
 
-        if ($bookData) {
-            return Book::fromArray($bookData);
+            if ($bookData) {
+                return Book::fromArray($bookData);
+            }
+
+            return null;
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
         }
-
-        return null;
     }
 
     /**
@@ -164,7 +176,7 @@ class BookManager
                 'availability' => $book->getAvailability()
             ]);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Error : " . $e->getMessage();
         }
     }
 
@@ -186,7 +198,7 @@ class BookManager
                 'availability' => $book->getAvailability()
             ]);
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Error : " . $e->getMessage();
         }
     }
 
@@ -197,9 +209,13 @@ class BookManager
      */
     public function deleteBook(int $bookId): void
     {
-        $sql = "DELETE FROM book WHERE id = :id";
-        $statement = $this->db->prepare($sql);
-        $statement->execute(['id' => $bookId]);
+        try {
+            $sql = "DELETE FROM book WHERE id = :id";
+            $statement = $this->db->prepare($sql);
+            $statement->execute(['id' => $bookId]);
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
+        }
     }
 
     /**
@@ -229,7 +245,7 @@ class BookManager
 
             return $searchResults;
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "Error : " . $e->getMessage();
         }
     }
 }

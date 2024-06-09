@@ -18,7 +18,6 @@ class UserManager
      * Initialise la connexion à la base de données.
      */
     public function __construct()
-
     {
         $this->db = DBManager::getInstance()->getPDO();
     }
@@ -32,11 +31,15 @@ class UserManager
      */
     public function saveUser(string $pseudo, string $email, string $password): bool
     {
-        $sql = "INSERT INTO user (pseudo, email, password) VALUES (?, ?, ?)";
-        $statement = $this->db->prepare($sql);
-        $success = $statement->execute([$pseudo, $email, $password]);
+        try {
+            $sql = "INSERT INTO user (pseudo, email, password) VALUES (?, ?, ?)";
+            $statement = $this->db->prepare($sql);
+            $success = $statement->execute([$pseudo, $email, $password]);
 
-        return $success;
+            return $success;
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
+        }
     }
 
     /**
@@ -46,15 +49,19 @@ class UserManager
      */
     public function getUserByEmail(string $email): ?User
     {
-        $sql = "SELECT * FROM user WHERE email = ?";
-        $statement = $this->db->prepare($sql);
-        $statement->execute([$email]);
+        try {
+            $sql = "SELECT * FROM user WHERE email = ?";
+            $statement = $this->db->prepare($sql);
+            $statement->execute([$email]);
 
-        $userData = $statement->fetch();
-        if ($userData) {
-            return User::fromArray($userData);
-        } else {
-            return null;
+            $userData = $statement->fetch();
+            if ($userData) {
+                return User::fromArray($userData);
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
         }
     }
 
@@ -65,18 +72,21 @@ class UserManager
      */
     public function getUserById(int $userId): ?User
     {
-        $sql = "SELECT * FROM user WHERE id = ?";
-        $statement = $this->db->prepare($sql);
-        $statement->execute([$userId]);
+        try {
+            $sql = "SELECT * FROM user WHERE id = ?";
+            $statement = $this->db->prepare($sql);
+            $statement->execute([$userId]);
 
-        $userData = $statement->fetch();
-        if ($userData) {
-            return User::fromArray($userData);
-        } else {
-            return null;
+            $userData = $statement->fetch();
+            if ($userData) {
+                return User::fromArray($userData);
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
         }
     }
-
 
     /**
      * Met à jour le profil d'un utilisateur dans la base de données.
@@ -88,16 +98,20 @@ class UserManager
      */
     public function updateUserProfile(int $userId, string $pseudo, string $email, string $password): bool
     {
-        $sql = "UPDATE user SET email = :email, password = :password, pseudo = :pseudo WHERE id = :userId";
-        $statement = $this->db->prepare($sql);
-        $success = $statement->execute([
-            'userId' => $userId,
-            'email' => $email,
-            'password' => $password,
-            'pseudo' => $pseudo
-        ]);
+        try {
+            $sql = "UPDATE user SET email = :email, password = :password, pseudo = :pseudo WHERE id = :userId";
+            $statement = $this->db->prepare($sql);
+            $success = $statement->execute([
+                'userId' => $userId,
+                'email' => $email,
+                'password' => $password,
+                'pseudo' => $pseudo
+            ]);
 
-        return $success;
+            return $success;
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
+        }
     }
 
     /**
@@ -108,11 +122,15 @@ class UserManager
      */
     public function updateUserProfileImage(int $userId, string $imagePath): void
     {
-        $sql = "UPDATE user SET profile_image = :imagePath WHERE id = :userId";
-        $statement = $this->db->prepare($sql);
-        $statement->execute([
-            'imagePath' => $imagePath,
-            'userId' => $userId
-        ]);
+        try {
+            $sql = "UPDATE user SET profile_image = :imagePath WHERE id = :userId";
+            $statement = $this->db->prepare($sql);
+            $statement->execute([
+                'imagePath' => $imagePath,
+                'userId' => $userId
+            ]);
+        } catch (PDOException $e) {
+            echo "Error : " . $e->getMessage();
+        }
     }
 }

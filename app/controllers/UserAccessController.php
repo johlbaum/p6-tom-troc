@@ -8,6 +8,13 @@ require_once '../app/models/UserManager.php';
  */
 class UserAccessController
 {
+    private UserManager $userManager;
+
+    public function __construct()
+    {
+        $this->userManager = new UserManager();
+    }
+
     /**
      * Affiche le formulaire d'enregistrement et de connexion.
      * @param string $action : l'action à effectuer (signIn ou logIn).
@@ -25,7 +32,7 @@ class UserAccessController
      * Enregistrement de l'utilisateur.
      * @return void
      */
-    public function signInUser(): void
+    public function signUpUser(): void
     {
         // On vérifie que les champs ne soient pas vides.
         if (empty($_POST['pseudo']) || empty($_POST['email']) || empty($_POST['password'])) {
@@ -47,8 +54,7 @@ class UserAccessController
             $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // On vérifie que l'utilisateur n'existe pas déjà.
-            $userManager = new UserManager();
-            $user = $userManager->getUserByEmail($email);
+            $user = $this->userManager->getUserByEmail($email);
 
             if ($user) {
                 $_SESSION['message'] = "Un compte avec cette adresse e-mail existe déjà.";
@@ -56,8 +62,7 @@ class UserAccessController
                 exit();
             } else {
                 // On enregistre l'utilisateur dans la base de données.
-                $userManager = new UserManager();
-                $success = $userManager->saveUser($pseudo, $email, $cryptPassword);
+                $success = $this->userManager->saveUser($pseudo, $email, $cryptPassword);
 
                 // On envoie un message de confirmation de création de compte ou d'erreur à l'utilisateur.
                 if ($success) {
@@ -98,14 +103,15 @@ class UserAccessController
             $password = htmlspecialchars($_POST['password']);
 
             // On vérifie que l'utilisateur existe.
-            $userManager = new UserManager();
-            $user = $userManager->getUserByEmail($email);
+            $user = $this->userManager->getUserByEmail($email);
 
             // Si l'utilisateur existe :
             if ($user) {
                 // On vérifie que le mot de passe est correct.
                 if (!password_verify($password, $user->getPassword())) {
                     $_SESSION['message'] = "Le mot de passe est incorrect.";
+                    header("Location: index.php?action=logInForm");
+                    exit();
                 } else {
                     // On connecte l'utilisateur.
                     $_SESSION['userId'] = $user->getId();

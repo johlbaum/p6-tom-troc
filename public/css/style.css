@@ -59,6 +59,34 @@ header {
     margin-right: 78px;
 }
 
+.message-icon {
+    position: relative;
+    top: 2px;
+    padding-right: 3px;
+    width: 16px;
+}
+
+.unread-msg-count {
+    background-color: black;
+    border-radius: 10px;
+    color: #fff;
+    padding: 3px 4px;
+    font-size: 9px;
+    position: relative;
+    top: -1px;
+    margin-left: 4px;
+}
+
+.mail-box-item {
+    display: flex;
+}
+
+.account-icon {
+    position: relative;
+    top: 1px;
+    padding-right: 3px;
+}
+
 /* Nav */
 
 nav {
@@ -79,10 +107,6 @@ nav ul li a {
     display: block;
 }
 
-.right-menu {
-    margin-left: 40px;
-}
-
 .right-menu li a {
     padding-left: 58px;
 }
@@ -96,19 +120,27 @@ nav ul li a {
     padding-left: 0;
 }
 
+.selected {
+    font-weight: bold;
+}
+
 /* Connexion */
 
 .connexion-wrapper {
     display: flex;
 }
 
-.left-block {
+.connexion-wrapper .left-block {
     width: 50%;
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     background-color: #FAF9F7;
+}
+
+.connexion-wrapper .right-block {
+    width: 50%;
 }
 
 .left-block h2 {
@@ -122,11 +154,9 @@ nav ul li a {
 }
 
 .right-block img {
-    width: 50%;
-}
-
-.right-block img {
     width: 100%;
+    height: calc(100vh - 140px);
+    object-fit: cover;
 }
 
 .form-input {
@@ -189,6 +219,7 @@ nav ul li a {
     font-size: 36px;
     font-family: "Playfair Display", serif;
     margin-bottom: 16px;
+    font-weight: 400;
 }
 
 .hero-left-block-content {
@@ -206,6 +237,7 @@ nav ul li a {
     font-weight: 600;
     border: none;
     cursor: pointer;
+    display: inline-block;
 }
 
 .hero-right-block-wrapper {
@@ -239,8 +271,9 @@ nav ul li a {
 
 .cards-wrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+    gap: 20px;
 }
 
 .cards-wrapper a {
@@ -279,7 +312,7 @@ nav ul li a {
 }
 
 .card-sell-by {
-    font-size: 10px;
+    font-size: 12px;
     color: #A6A6A6;
     font-style: italic;
 }
@@ -301,6 +334,7 @@ nav ul li a {
     font-size: 16px;
     border: none;
     cursor: pointer;
+    display: inline-block;
 }
 
 .how-it-works-section {
@@ -317,9 +351,11 @@ nav ul li a {
 }
 
 .how-it-works-content {
-    margin-bottom: 40px;
     text-align: center;
     font-weight: 300;
+    width: 45%;
+    margin: auto;
+    margin-bottom: 40px;
 }
 
 .how-it-works-wrapper {
@@ -350,6 +386,7 @@ nav ul li a {
     border-radius: 10px;
     margin-top: 48px;
     cursor: pointer;
+    display: inline-block;
 }
 
 .full-width-image {
@@ -435,9 +472,36 @@ nav ul li a {
     border: none;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
 /* Detail book */
 
 .detail-book-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-book {
     display: flex;
 }
 
@@ -449,6 +513,10 @@ nav ul li a {
     width: 50%;
     background-color: #FAF9F7;
     padding: 59px 85px 80px 85px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .detail-book-title {
@@ -474,6 +542,7 @@ nav ul li a {
     width: 100%;
     height: 850px;
     object-fit: cover;
+    height: calc(100vh - 194px);
 }
 
 .detail-book-owner-wrapper {
@@ -506,7 +575,7 @@ nav ul li a {
 }
 
 .detail-book-subtitle {
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     margin-bottom: 16px;
 }
@@ -520,6 +589,19 @@ nav ul li a {
     border-radius: 10px;
     padding: 22px 16px;
     cursor: pointer;
+    text-align: center;
+}
+
+.book-path {
+    background-color: #F5F3EF;
+    padding: 16px 150px;
+    height: 50px;
+}
+
+.book-path p {
+    color: #A6A6A6;
+    font-size: 12px;
+    font-weight: 300;
 }
 
 /* User dashboard */
@@ -529,9 +611,11 @@ nav ul li a {
     background-color: #FAF9F7;
 }
 
-.dashboard-wrapper h2 {
+.dashboard-wrapper h1 {
     margin-bottom: 48px;
     font-family: "Playfair Display", serif;
+    font-size: 26px;
+    font-weight: 400;
 }
 
 .user-info-wrapper {
@@ -652,19 +736,39 @@ nav ul li a {
 
 .user-books-table table td {
     text-align: left;
+    padding: 25px 25px;
+}
+
+.user-books-table table th:first-child {
+    padding-left: 66px;
+}
+
+.user-books-table table td:first-child {
+    padding-left: 66px;
+}
+
+.user-books-table table td:last-child {
+    display: flex;
+    flex-direction: row;
+    height: 140px;
+    align-items: center;
 }
 
 thead th {
-    padding: 33px 46px 9px 46px;
+    padding: 33px 25px 9px 25px;
     border-bottom: 1px solid #F5F3EF;
     text-transform: uppercase;
     font-size: 12px;
     text-align: left;
+    width: 130px;
 }
 
 tbody td {
-    padding: 20px 20px 20px 46px;
     font-size: 12px;
+}
+
+.user-books-table table tbody tr td:nth-child(4) {
+    font-style: italic;
 }
 
 .user-info-picture-profile form input {
@@ -694,12 +798,21 @@ tbody td {
     background-color: #EDF2F6;
 }
 
+.even-row:last-child :nth-child(1) {
+    border-bottom-left-radius: 20px;
+}
+
+.even-row:last-child :nth-child(6) {
+    border-bottom-right-radius: 20px;
+    display: table-cell;
+}
+
 .add-book-button {
     text-align: center;
     padding: 40px 0;
 }
 
-.add-book-button button {
+.add-book-button p {
     padding: 12px 28px;
     color: #00AC66;
     font-size: 16px;
@@ -708,6 +821,7 @@ tbody td {
     border-radius: 10px;
     background-color: #fff;
     cursor: pointer;
+    display: inline-block;
 }
 
 .available-book {
@@ -796,7 +910,7 @@ tbody td {
     font-size: 12px;
 }
 
-.add-book-wrapper h2 {
+.add-book-wrapper h1 {
     font-family: "Playfair Display", serif;
     margin-bottom: 23px;
     font-size: 26px;
@@ -830,6 +944,17 @@ tbody td {
     border-radius: 6px;
     background-color: #EDF2F6;
     padding-left: 12px;
+    border-right: 16px solid transparent;
+}
+
+.add-book-form-input textarea {
+    height: 300px;
+    border: none;
+    border-radius: 6px;
+    background-color: #EDF2F6;
+    padding: 15px 12px;
+    line-height: 1.5;
+    resize: none;
 }
 
 .submit-button {
@@ -853,17 +978,14 @@ tbody td {
 }
 
 .user-profile-left-block {
-    width: 45%;
     background-color: #fff;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 20px 0;
-}
-
-.user-profile-left-block {
+    padding: 56px 63px;
     width: 30%;
+    height: fit-content;
     border-radius: 20px;
 }
 
@@ -872,9 +994,9 @@ tbody td {
     height: 1px;
     border: 0;
     border-top: 1px solid #F5F3EF;
-    margin: 0 auto;
+    margin: 48px auto;
     padding: 0;
-    width: 242px;
+    width: 100%;
 }
 
 .user-profile-right-block {
@@ -885,16 +1007,263 @@ tbody td {
     margin-top: 0;
 }
 
-.profile-send-message-button button {
+.profile-send-message-button p {
     padding: 22px 38px;
     color: #00AC66;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     border: 1px solid #00AC66;
     border-radius: 10px;
     background-color: #F5F3EF;
     cursor: pointer;
     margin-top: 45px;
+    display: inline-flex;
+}
+
+/* MailBox */
+
+.mail-box-wrapper {
+    padding: 0 150px;
+    background-color: #F5F3EF;
+    display: flex;
+}
+
+.mail-box-left-block {
+    width: 47%;
+    background-color: #FAF9F7;
+}
+
+.mail-box-left-block-content h1 {
+    padding: 55px 34px 0 34px;
+}
+
+.mail-box-left-block-content h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.mail-box-left-block-content h1 {
+    margin-bottom: 35px;
+}
+
+.mail-box-right-block {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 45px;
+}
+
+.mail-box-right-block .recipient-profile {
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+.recipient-profile {
+    display: flex;
+    align-items: center;
+    padding: 21px 34px;
+}
+
+.recipient-profile.selected {
+    background-color: #fff; 
+}
+
+.recipient-profile img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.recipient-profile-right-block {
+    width: 100%;
+}
+
+.bloc-pseudo-data {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bloc-pseudo-data p {
+    font-size: 16px;
+}
+
+.message-content {
+    margin-top: 5px;
+}
+
+.message-content p {
+    color: #A6A6A6;
+    font-size: 14px;
+}
+
+.messages-content {
+    text-align: right;
+    height: 350px; 
+    overflow-y: auto; 
+}
+
+.message-form {
+    display: flex;
+    margin-bottom: 100px;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.input-message-form {
+   width: 75%;
+}
+
+.input-message-form ::placeholder {
+   color: #A6A6A6;
+}
+
+.input-message-form input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 6px;
+    padding-left: 40px;
+}
+
+.input-message-button {
+    width: 20%;
+}
+
+.input-message-button input {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background-color: #00AC66;
+    color: #fff;
+    height: 50px;
+    cursor: pointer;
+}
+
+.message-wrapper-sender {
+    display: flex;
+    margin-bottom: 30px;
+    flex-direction: column;
+    align-items: end;
+    margin-right: 15px;
+}
+
+.message-sender {
+    color: #292929;
+    background-color: #EDF2F6;
+    text-align: right;
+    padding: 10px 18px;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.message-wrapper-recipient {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 30px;
+    flex-direction: column;
+}
+
+.message-recipient {
+    font-weight: 400;
+    font-size: 12px;
+    color: #292929;
+    background-color: #fff;
+    text-align: left;
+    padding: 10px 18px;
+    width: fit-content;
+}
+
+.home-mail-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-mail-box img {
+    width: 400px;
+    margin-bottom: 40px;
+    filter: grayscale(60%);
+}
+
+.message-wrapper-sender-date img {
+    display: none;
+}
+
+.message-wrapper-recipient-date {
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message-wrapper-recipient-date p {
+    font-size: 12px;
+    color:#A6A6A6;
+}
+
+.message-wrapper-recipient-date img {
+    width: 24px;
+    margin-right: 6px;
+}
+
+.message-wrapper-sender-date p {
+    font-size: 12px;
+    color: #A6A6A6;
+}
+
+.message-wrapper-sender-date {
+    margin-bottom: 10px;
+}
+
+.recipient-profile-left-block {
+    position: relative;
+}
+
+.unread-messages-indicator {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 39px;
+    right: 15px;
+}
+
+.mail-box-indications {
+    font-size: 20px;
+    font-weight: 100;
+}
+
+/* Error page */
+
+.error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    text-align: center;
+}
+
+.page-not-found-error {
+    font-size: 150px;
+}
+
+.page-not-found-message {
+    font-size: 25px;
+    font-weight: 100;
 }
 
 /* Footer */

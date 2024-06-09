@@ -1,6 +1,6 @@
 <div class="connexion-wrapper">
     <div class="left-block">
-        <h2><?php echo $action === "logInForm" ?  "Connexion" : "Inscription" ?></h2>
+        <h1><?php echo $action === "logInForm" ?  "Connexion" : "Inscription" ?></h1>
         <form action="index.php?action=<?php echo $action === "logInForm" ?  "logIn" : "signIn" ?>" method="POST">
             <?php if ($action !== "logInForm") : ?>
                 <div class="form-input">
