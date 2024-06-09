@@ -1153,7 +1153,7 @@ tbody td {
 .message-sender {
     color: #292929;
     background-color: #EDF2F6;
-    text-align: right;
+    text-align: left;
     padding: 10px 18px;
     font-weight: 400;
     font-size: 12px;
