@@ -1,27 +1,13 @@
 <?php
 
-require_once('DBManager.php');
+require_once('AbstractEntityManager.php');
 require_once('Book.php');
 
 /**
  * Classe qui gère les livres.
  */
-class BookManager
+class BookManager extends AbstractEntityManager
 {
-    /**
-     * Instance de la classe DBManager.
-     */
-    private $db;
-
-    /**
-     * Constructeur de la classe BookManager.
-     * Initialise la connexion à la base de données.
-     */
-    public function __construct()
-    {
-        $this->db = DBManager::getInstance()->getPDO();
-    }
-
     /**
      * Récupère tous les livres.
      * @return array : un tableau d'objets Book.
@@ -35,7 +21,7 @@ class BookManager
                 JOIN user ON book.user_id = user.id
                 ORDER BY book.title ASC
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute();
 
             $books = [];
@@ -70,7 +56,7 @@ class BookManager
                 WHERE 
                     book.user_id = :userId
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['userId' => $userId]);
 
             $allBooksByUser = [];
@@ -99,7 +85,7 @@ class BookManager
                 ORDER BY book.id DESC
                 LIMIT 4
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute();
 
             $lastBooksAdded = [];
@@ -127,7 +113,7 @@ class BookManager
                 JOIN user ON book.user_id = user.id
                 WHERE book.id = ? 
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([$bookId]);
 
             $bookData = $statement->fetch();
@@ -166,7 +152,7 @@ class BookManager
     {
         try {
             $sql = "INSERT INTO book (user_id, title, author, description, availability) VALUES (:user_id, :title, :author, :description, :availability)";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'user_id' => $book->getUserId(),
                 'title' => $book->getTitle(),
@@ -188,7 +174,7 @@ class BookManager
     {
         try {
             $sql = "UPDATE book SET title = :title, author = :author, description = :description, availability = :availability WHERE id = :id";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'id' => $book->getId(),
                 'title' => $book->getTitle(),
@@ -210,7 +196,7 @@ class BookManager
     {
         try {
             $sql = "DELETE FROM book WHERE id = :id";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['id' => $bookId]);
         } catch (PDOException $e) {
             echo "Error : " . $e->getMessage();
@@ -231,7 +217,7 @@ class BookManager
                 JOIN user ON book.user_id = user.id
                 WHERE book.title LIKE :searchValue
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             // Ajout du caractère joker à la fin de la la valeur de recherche pour permettre de rechercher 
             // les livres dont les titres commencent exactement par la valeur de recherche fournie par l'utilisateur.
             $statement->execute(['searchValue' => $searchValue . '%']);

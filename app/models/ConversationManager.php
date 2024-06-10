@@ -1,27 +1,13 @@
 <?php
 
-require_once('DBManager.php');
+require_once('AbstractEntityManager.php');
 require_once('Message.php');
 
 /**
  * Classe qui gère les conversations.
  */
-class ConversationManager
+class ConversationManager extends AbstractEntityManager
 {
-    /**
-     * Instance de la classe DBManager.
-     */
-    private $db;
-
-    /**
-     * Constructeur de la classe ConversationManager.
-     * Initialise la connexion à la base de données.
-     */
-    public function __construct()
-    {
-        $this->db = DBManager::getInstance()->getPDO();
-    }
-
     /**
      * Vérifie si une conversation existe entre deux utilisateurs, sinon crée une nouvelle conversation.
      * @param int $recipientId : l'identifiant du destinataire.
@@ -41,7 +27,7 @@ class ConversationManager
                 OR 
                     (user1_id = :user2_id AND user2_id = :user1_id)
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'user1_id' => $senderId,
                 'user2_id' => $recipientId
@@ -55,13 +41,13 @@ class ConversationManager
             } else {
                 // La conversation n'existe pas, il faut la créer.
                 $sql = 'INSERT INTO conversations (user1_id, user2_id) VALUES (:user1_id, :user2_id)';
-                $statement = $this->db->prepare($sql);
+                $statement = $this->pdo->prepare($sql);
                 $statement->execute([
                     'user1_id' => $senderId,
                     'user2_id' => $recipientId
                 ]);
 
-                return $this->db->lastInsertId();
+                return $this->pdo->lastInsertId();
             }
         } catch (PDOException $e) {
             echo "Error : " . $e->getMessage();
@@ -80,7 +66,7 @@ class ConversationManager
     {
         try {
             $sql = "INSERT INTO messages (conversation_id, sender_id, receiver_id, message) VALUES (:conversation_id, :sender_id, :receiver_id, :message)";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $result = $statement->execute([
                 'conversation_id' => $conversationId,
                 'sender_id' => $senderId,
@@ -110,7 +96,7 @@ class ConversationManager
                 WHERE conversation_id = :conversation_id 
                 ORDER BY sent_at ASC
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['conversation_id' => $conversationId]);
 
             $messages = [];
@@ -139,7 +125,7 @@ class ConversationManager
                 WHERE user1_id = :user_id 
                 OR user2_id = :user_id
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['user_id' => $userConnectedId]);
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -173,7 +159,7 @@ class ConversationManager
                 ) latest_msg ON m.conversation_id = latest_msg.conversation_id AND m.sent_at = latest_msg.max_sent_at
                 ORDER BY m.sent_at DESC
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute($conversationIds);
 
             $messages = [];
@@ -203,7 +189,7 @@ class ConversationManager
                 WHERE (user1_id = :user_id AND user2_id = :recipient_id) 
                 OR (user1_id = :recipient_id AND user2_id = :user_id)
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'user_id' => $userConnectedId,
                 'recipient_id' => $recipientId
@@ -231,7 +217,7 @@ class ConversationManager
                 WHERE receiver_id = :user_id 
                 AND read_at IS NULL
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['user_id' => $userId]);
 
             $result = $statement->fetchColumn();
@@ -257,7 +243,7 @@ class ConversationManager
                 WHERE conversation_id = :conversation_id 
                 AND receiver_id = :user_id
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'conversation_id' => $conversationId,
                 'user_id' => $userId
@@ -283,7 +269,7 @@ class ConversationManager
                 AND conversation_id = :conversation_id 
                 AND read_at IS NULL
             ";
-            $statement = $this->db->prepare($sql);
+            $statement = $this->pdo->prepare($sql);
             $statement->execute([
                 'user_id' => $userId,
                 'conversation_id' => $conversationId
