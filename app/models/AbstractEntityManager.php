@@ -1,5 +1,7 @@
 <?php
 
+require_once "DBManager.php";
+
 /**
  * Classe abstraite qui récupère automatiquement le gestionnaire de base de données. 
  */

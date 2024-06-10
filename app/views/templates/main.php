@@ -28,12 +28,15 @@
                         <a href="index.php?action=showMailBox">
                             <img src="./img/message-icon.svg" alt="Icone de la messagerie" class="message-icon">
                             Messagerie
-                            <?php echo $_SESSION['unreadMessagesCount'] > 0 ? '<span class="unread-msg-count">' . $_SESSION['unreadMessagesCount'] . '</span>' : ''; ?>
+                            <?php if (isset($_SESSION['unreadMessagesCount']) && $_SESSION['unreadMessagesCount'] > 0) {
+                                echo '<span class="unread-msg-count">' . $_SESSION['unreadMessagesCount'] . '</span>';
+                            } ?>
                         </a>
                     </li>
                     <li <?php if ($currentPage === 'userDashboard') echo 'class="selected"'; ?>><a href="index.php?action=userDashboard">
                             <img src="./img/account-icon.svg" alt="Icone du compte" class="account-icon">
-                            Mon compte</a></li>
+                            Mon compte</a>
+                    </li>
                     <li>
                         <?php
                         if (isset($_SESSION['userEmail'])) {
