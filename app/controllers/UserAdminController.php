@@ -136,51 +136,57 @@ class UserAdminController
         // On vérifie si l'utilisateur est connecté.
         Utils::checkIfUserIsConnected();
 
-        // On récupère l'id du livre à modifier dans l'URL s'il existe (dans le cas de la mise à jour d'un livre).
-        if (!empty($_GET['id'])) {
-            $bookId = $_GET['id'];
-        }
+        // On récupère l'id du livre à modifier, s'il existe.
+        $bookId = !empty($_GET['id']) ? $_GET['id'] : null;
 
+        // On vérifie si tous les champs nécessaires sont remplis.
         if (
             empty($_POST['book-title']) ||
             empty($_POST['book-author']) ||
             empty($_POST['book-description']) ||
             empty($_POST['book-availability'])
         ) {
-            $_SESSION['message'] = "Veuillez remplir tous les champs.";
-            if ($bookId) {
-                header("Location: index.php?action=editBookForm");
-                exit;
-            } else {
-                header("Location: index.php?action=addBookForm");
-                exit;
-            }
-        } else {
-            $bookId = null;
-
-            // On récupère de l'id de l'utilisateur.
-            $userId = $_SESSION['userId'];
-
-            $bookTitle = htmlspecialchars($_POST['book-title']);
-            $bookAuthor = htmlspecialchars($_POST['book-author']);
-            $bookDescription = htmlspecialchars($_POST['book-description']);
-            $bookAvailability = htmlspecialchars($_POST['book-availability']);
-
-            //Création de l'objet Book.
-            $book = Book::fromArray([
-                'id' => $bookId, //id sera null si aucun paramètre id n'est trouvé dans l'URL (dans la cas de l'ajout d'un nouveau livre).
-                'user_id' => $userId,
-                'title' => $bookTitle,
-                'author' => $bookAuthor,
-                'description' => $bookDescription,
-                'availability' => $bookAvailability
-            ]);
-
-            $this->bookManager->addOrUpdateBook($book);
-
-            header("Location: index.php?action=userDashboard");
-            exit;
+            $this->redirectToFormWithMessage($bookId, "Veuillez remplir tous les champs.");
         }
+
+        // On récupère l'id de l'utilisateur.
+        $userId = $_SESSION['userId'];
+
+        // On échappe les caractères spéciaux.
+        $bookTitle = htmlspecialchars($_POST['book-title']);
+        $bookAuthor = htmlspecialchars($_POST['book-author']);
+        $bookDescription = htmlspecialchars($_POST['book-description']);
+        $bookAvailability = htmlspecialchars($_POST['book-availability']);
+
+        // On crée l'objet Book.
+        $book = Book::fromArray([
+            'id' => $bookId, // id sera null si aucun paramètre id n'est trouvé dans l'URL (dans le cas de l'ajout d'un nouveau livre).
+            'user_id' => $userId,
+            'title' => $bookTitle,
+            'author' => $bookAuthor,
+            'description' => $bookDescription,
+            'availability' => $bookAvailability
+        ]);
+
+        // On ajoute ou met à jour le livre.
+        $this->bookManager->addOrUpdateBook($book);
+
+        // On redirige vers le tableau de bord de l'utilisateur.
+        header("Location: index.php?action=userDashboard");
+        exit;
+    }
+
+    /**
+     * Méthode qui redirige l'utilisateur vers le formulaire approprié (ajout ou édition) avec un message d'erreur.
+     * @param string|null $bookId : l'ID du livre à modifier, ou null si on ajoute un nouveau livre.
+     * @param string $message : le message d'erreur à afficher à l'utilisateur.
+     */
+    private function redirectToFormWithMessage(?string $bookId, string $message): void
+    {
+        $_SESSION['message'] = $message;
+        $action = $bookId ? "editBookForm" : "addBookForm";
+        header("Location: index.php?action=$action");
+        exit;
     }
 
     /**
