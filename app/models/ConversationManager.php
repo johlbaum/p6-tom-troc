@@ -24,7 +24,7 @@ class ConversationManager extends AbstractEntityManager
                     conversations 
                 WHERE 
                     (user1_id = :user1_id AND user2_id = :user2_id) 
-                OR 
+                    OR 
                     (user1_id = :user2_id AND user2_id = :user1_id)
             ";
             $statement = $this->pdo->prepare($sql);
@@ -65,7 +65,8 @@ class ConversationManager extends AbstractEntityManager
     public function insertMessage(int $conversationId, int $senderId, int $recipientId, string $message): void
     {
         try {
-            $sql = "INSERT INTO messages (conversation_id, sender_id, receiver_id, message) VALUES (:conversation_id, :sender_id, :receiver_id, :message)";
+            $sql = "INSERT INTO messages 
+                (conversation_id, sender_id, receiver_id, message) VALUES (:conversation_id, :sender_id, :receiver_id, :message)";
             $statement = $this->pdo->prepare($sql);
             $result = $statement->execute([
                 'conversation_id' => $conversationId,
@@ -91,10 +92,14 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT * 
-                FROM messages 
-                WHERE conversation_id = :conversation_id 
-                ORDER BY sent_at ASC
+                SELECT 
+                    * 
+                FROM 
+                    messages 
+                WHERE 
+                    conversation_id = :conversation_id 
+                ORDER BY 
+                    sent_at ASC
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute(['conversation_id' => $conversationId]);
@@ -120,10 +125,14 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT conversation_id
-                FROM conversations
-                WHERE user1_id = :user_id 
-                OR user2_id = :user_id
+                SELECT 
+                    conversation_id
+                FROM 
+                    conversations
+                WHERE 
+                    user1_id = :user_id 
+                    OR 
+                    user2_id = :user_id
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute(['user_id' => $userConnectedId]);
@@ -149,16 +158,29 @@ class ConversationManager extends AbstractEntityManager
 
         try {
             $sql = "
-                SELECT m.*
-                FROM messages m
+                SELECT 
+                    m.*
+                FROM 
+                    messages m
                 INNER JOIN (
-                    SELECT conversation_id, MAX(sent_at) AS max_sent_at
-                    FROM messages
-                    WHERE conversation_id IN ($conversationIdsPlaceholder)
-                    GROUP BY conversation_id
-                ) latest_msg ON m.conversation_id = latest_msg.conversation_id AND m.sent_at = latest_msg.max_sent_at
-                ORDER BY m.sent_at DESC
+                    SELECT 
+                        conversation_id, 
+                        MAX(sent_at) AS max_sent_at
+                    FROM 
+                        messages
+                    WHERE 
+                        conversation_id IN ($conversationIdsPlaceholder)
+                    GROUP BY 
+                        conversation_id
+                ) latest_msg 
+                ON 
+                    m.conversation_id = latest_msg.conversation_id 
+                    AND 
+                    m.sent_at = latest_msg.max_sent_at
+                ORDER BY 
+                    m.sent_at DESC
             ";
+
             $statement = $this->pdo->prepare($sql);
             $statement->execute($conversationIds);
 
@@ -184,10 +206,14 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT conversation_id
-                FROM conversations
-                WHERE (user1_id = :user_id AND user2_id = :recipient_id) 
-                OR (user1_id = :recipient_id AND user2_id = :user_id)
+                SELECT 
+                    conversation_id
+                FROM 
+                    conversations
+                WHERE 
+                    (user1_id = :user_id AND user2_id = :recipient_id) 
+                    OR 
+                    (user1_id = :recipient_id AND user2_id = :user_id)
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute([
@@ -212,10 +238,14 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT COUNT(*) 
-                FROM messages 
-                WHERE receiver_id = :user_id 
-                AND read_at IS NULL
+                SELECT 
+                    COUNT(*) 
+                FROM 
+                    messages 
+                WHERE 
+                    receiver_id = :user_id 
+                    AND 
+                    read_at IS NULL
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute(['user_id' => $userId]);
@@ -238,10 +268,14 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                UPDATE messages 
-                SET read_at = NOW() 
-                WHERE conversation_id = :conversation_id 
-                AND receiver_id = :user_id
+                UPDATE 
+                    messages 
+                SET 
+                    read_at = NOW() 
+                WHERE 
+                    conversation_id = :conversation_id 
+                    AND 
+                    receiver_id = :user_id
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute([
@@ -263,11 +297,16 @@ class ConversationManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT COUNT(*) 
-                FROM messages 
-                WHERE receiver_id = :user_id 
-                AND conversation_id = :conversation_id 
-                AND read_at IS NULL
+                SELECT 
+                    COUNT(*) 
+                FROM 
+                    messages 
+                WHERE 
+                    receiver_id = :user_id 
+                    AND 
+                    conversation_id = :conversation_id 
+                    AND 
+                    read_at IS NULL
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute([

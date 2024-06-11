@@ -16,10 +16,17 @@ class BookManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT book.*, user.pseudo AS user_pseudo 
-                FROM book
-                JOIN user ON book.user_id = user.id
-                ORDER BY book.title ASC
+                SELECT 
+                    book.*, 
+                    user.pseudo AS user_pseudo 
+                FROM 
+                    book
+                JOIN 
+                    user 
+                ON 
+                    book.user_id = user.id
+                ORDER BY 
+                    book.title ASC
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute();
@@ -79,10 +86,17 @@ class BookManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT book.*, user.pseudo AS user_pseudo 
-                FROM book
-                JOIN user ON book.user_id = user.id
-                ORDER BY book.id DESC
+                SELECT 
+                    book.*, 
+                    user.pseudo AS user_pseudo 
+                FROM 
+                    book
+                JOIN 
+                    user 
+                ON  
+                    book.user_id = user.id
+                ORDER BY 
+                    book.id DESC
                 LIMIT 4
             ";
             $statement = $this->pdo->prepare($sql);
@@ -108,10 +122,17 @@ class BookManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT book.*, user.pseudo AS user_pseudo 
-                FROM book
-                JOIN user ON book.user_id = user.id
-                WHERE book.id = ? 
+                SELECT 
+                    book.*, 
+                    user.pseudo AS user_pseudo 
+                FROM 
+                    book
+                JOIN 
+                    user 
+                ON 
+                    book.user_id = user.id
+                WHERE 
+                    book.id = ? 
             ";
             $statement = $this->pdo->prepare($sql);
             $statement->execute([$bookId]);
@@ -212,10 +233,18 @@ class BookManager extends AbstractEntityManager
     {
         try {
             $sql = "
-                SELECT book.*, user.pseudo AS user_pseudo 
-                FROM book
-                JOIN user ON book.user_id = user.id
-                WHERE book.title LIKE :searchValue
+                SELECT 
+                    book.*, user.pseudo AS user_pseudo 
+                FROM 
+                    book
+                JOIN 
+                    user 
+                ON 
+                    book.user_id = user.id
+                WHERE 
+                    book.title 
+                LIKE 
+                    :searchValue
             ";
             $statement = $this->pdo->prepare($sql);
             // Ajout du caractère joker à la fin de la la valeur de recherche pour permettre de rechercher 
