@@ -17,7 +17,7 @@
             <div class="logo">
                 <img src="./img/logo.svg" alt="Le logo de Tom Troc" />
             </div>
-            <?php $currentPage = $_GET['action']; ?>
+            <?php $currentPage = $_GET['action'] ?? 'home'; ?>
             <nav>
                 <ul class="left-menu">
                     <li <?php if ($currentPage === 'home') echo 'class="selected"'; ?>><a href="index.php?action=home">Accueil</a></li>
